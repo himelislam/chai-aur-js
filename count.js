@@ -1,10 +1,10 @@
 function myFunction (a, b){
 
-    // let count = 0;
+    let count = 0;
 
-    // while (b.includes(a)) {
-    //     count++
-    // }
+    while (b.includes(a)) {
+        count++
+    }
 
     return b.split(a).length - 1;
 }
