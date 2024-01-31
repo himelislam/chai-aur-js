@@ -66,4 +66,13 @@ console.log(Object.values(tinderUser));
 console.log(Object.entries(tinderUser));
 
 
-console.log(tinderUser.hasOwnProperty("jhon@gmail.com"));
+// console.log(tinderUser.hasOwnProperty("jhon@gmail.com"));
+
+const course = {
+    name : "ggbobo",
+    price: 3456
+}
+
+const {name} = course;
+
+console.log(name);
