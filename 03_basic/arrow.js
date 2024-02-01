@@ -10,6 +10,7 @@ const himel = function(){
     const name = "Himel";
     console.log(this);
     console.log(this.fetch);
+    console.log(this.fetch);
 }
 
 himel()
