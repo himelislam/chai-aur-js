@@ -1,16 +1,29 @@
-// function himel(){
-//     const name = "Himel";
-//     console.log(this);
-//     console.log(this.fetch);
-// }
+function himelOne(){
+    const name = "Himel";
+    console.log(this, "one");
+    // console.log(this.fetch);
+}
 
 // himel()
 
-const himel = function(){
+const himelTwo = function(){
     const name = "Himel";
-    console.log(this);
-    console.log(this.fetch);
-    console.log(this.fetch);
+    console.log(this, "two");
+    // console.log(this.fetch);
+    // console.log(this.fetch);
 }
 
-himel()
+
+const himelThree = () => {
+    const name = "Himel"
+    console.log(this , "three");
+}
+// himelOne()
+// himelTwo()
+// himelThree()
+
+// const sum = (num1, num2) => num1 + num2 
+// const sum = (num1, num2) => (num1 + num2) 
+const returnObjInArrowFunction = () => ({username: "Himel"})
+
+console.log(returnObjInArrowFunction());
