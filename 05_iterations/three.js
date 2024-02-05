@@ -41,3 +41,4 @@ const myObject = {
 for (const key of myObject) {
     console.log(key); // myObject is not iterable
 }
+
