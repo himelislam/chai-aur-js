@@ -7,7 +7,7 @@
 </head>
 <body style="background-color: #212121; color: #fff;">
     <ul class="language">
-        <li>Javascript</li>
+        <li class="lang">Javascript</li>
     </ul>
 </body>
 
@@ -23,6 +23,16 @@
 
     addLanguage('php')
     addLanguage('Ruby')
+
+    function addOptLanguage(lang){
+        const li = document.createElement('li')
+        li.appendChild(document.createTextNode(lang))
+        document.querySelector('.lang').parentElement.appendChild(li)
+    }
+
+    addOptLanguage('hi')
+    addOptLanguage('Hello')
+    addOptLanguage('Hello')
 </script>
 
 </html>
