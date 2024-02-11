@@ -8,6 +8,9 @@
 <body style="background-color: #212121; color: #fff;">
     <ul class="language">
         <li class="lang">Javascript</li>
+        <li class="lang">Javascript 1</li>
+        <li class="lang">Javascript 2</li>
+        <li class="lang">Javascript 3</li>
     </ul>
 </body>
 
@@ -33,6 +36,27 @@
     addOptLanguage('hi')
     addOptLanguage('Hello')
     addOptLanguage('Hello')
+
+    // Edit 
+
+    const secondLang = document.querySelector('li:nth-child(3)');
+    // secondLang.innerHTML = "Hee"
+    const newLi = document.createElement('li')
+    newLi.textContent = 'Ruuuuby'
+    // secondLang.replaceWith(newLi);
+
+    // edit
+
+    const firstLi = document.querySelector('li:nth-child(1)');
+    // firstLi.outerHTML = `<li>TypeScript</li>`
+    const newLione = document.createElement('li')
+    newLi.textContent = 'Typoo'
+    firstLi.replaceWith(newLi)
+
+    // remove
+
+    document.querySelector('li:last-child').remove()
+    document.querySelector('li:last-child').remove()
 </script>
 
 </html>
