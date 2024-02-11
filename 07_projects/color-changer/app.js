@@ -9,6 +9,7 @@ buttons.forEach((btn) => {
         // console.log(btn.id);
         // console.log(e.target.id);
         // body.style.backgroundColor = 'grey'
+        // console.log(parseInt('a4aaaa45'));
         switch (btn.id) {
             case 'grey':
                 body.style.backgroundColor = 'grey'
