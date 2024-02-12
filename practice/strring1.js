@@ -36,3 +36,7 @@ let varsity = "Leading Metropoliton University"
 // slice o jodi value boro and second value choto dei, taile empty string return kor: ex-> slice(12, 7) return korbe empty string
 
 // substring first value negative hole ekbare last index theke count kora shuru korbe, second value 
+
+// function myFunction(a) {
+//     return a.slice(0, a.length / 2);
+//  }
