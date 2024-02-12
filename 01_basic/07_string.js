@@ -1,6 +1,16 @@
 const playerName = new String('Himel-islam');
 
-console.log(playerName.fontcolor('red'));
+// console.log(playerName.fontcolor('red'));
+
+const a = 'Ashfaq MahbubMahi'
+
+// console.log(a.indexOf('M', 9));
+// console.log(a.substring(2,5)); // retuns the index of 2,3,4
+
+console.log(a.substring(-5, -1));
+// console.log(a.slice(12,7));
+
+
 
 // console.log(playerName);
 
