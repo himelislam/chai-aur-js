@@ -40,3 +40,35 @@ let varsity = "Leading Metropoliton University"
 // function myFunction(a) {
 //     return a.slice(0, a.length / 2);
 //  }
+
+const n = 'himel@gmail.com'
+// trim
+// includes
+// splite
+// replace
+
+
+function myFunction(a, n){
+    return a.charAt(n - 1)
+}
+
+// console.log(myFunction('abcd',1))
+
+const himel  = '123456789'
+
+// console.log(himel[2])
+
+// removing last characters 
+// slice(0,-3)
+
+// console.log(himel.slice(4, -3)); // index 4 to last 3 index
+// console.log(himel.slice(0,-3)); // index 0 to last 3 index
+// console.log(himel.slice(2,5)); // index 2,3,4
+
+function percentage(a,b){
+    return (a / 100) * b 
+}
+
+console.log(percentage(100,50))
+
+console.log(200/20);

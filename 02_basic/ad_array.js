@@ -15,7 +15,7 @@ const anotherArray = [1,2,3,4,[3,4,5],[3,4,[23,4,5,5,12,[5,8,9,6]]]];
 console.log(anotherArray.flat(Infinity));
 
 console.log(Array.isArray("himel"));
-console.log(Array.from("himel"));
+console.log(Array.from("himel")); // 
 console.log(Array.from({
     name: "himel"
 })); // interesting as we have to provide instruction for choosing the key or value as element of the array
