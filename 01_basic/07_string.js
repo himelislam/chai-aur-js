@@ -42,3 +42,9 @@ const url = "https://himel.com/himel%20islam";
 const spliteName = "himel-islam-khan-ch";
 
 // console.log(spliteName.split('-'));
+
+// spliteName.splice()
+
+const arr = [1,2,3,4,5,6,78,98];
+console.log(arr.splice(1,3,15,16));
+console.log(arr);

@@ -41,11 +41,16 @@ let varsity = "Leading Metropoliton University"
 //     return a.slice(0, a.length / 2);
 //  }
 
-const n = 'himel@gmail.com'
+const n = 'himel @ gmail . com'
 // trim
 // includes
 // splite
 // replace
+
+console.log(n.replace('@gmail.com', '@hotmail.com'));
+console.log(n.trim());
+console.log(n.split(' '));
+console.log(n.includes('@'));
 
 
 function myFunction(a, n){
