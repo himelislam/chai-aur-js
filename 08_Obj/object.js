@@ -46,27 +46,27 @@ const infos = [
 ];
 
 
-// infos.map((info)=>{
-//     Object.entries(info).map(([key, value])=>{
-//         // console.log(typeof(value), value);
-//         if(Array.isArray(value)){
-//             // if array type
-//             // console.log(value, 'arr');
-//             value.map((hobbie) => console.log(hobbie))
-//             console.log(`/`);
+infos.map((info)=>{
+    Object.entries(info).map(([key, value])=>{
+        // console.log(typeof(value), value);
+        if(Array.isArray(value)){
+            // if array type
+            // console.log(value, 'arr');
+            value.map((hobbie) => console.log(hobbie))
+            console.log(`/`);
             
-//         }else if(typeof(value) === 'object'){
+        }else if(typeof(value) === 'object'){
             
-//             // console.log(value , 'obj');
-//             Object.entries(value).map(([key, value]) => console.log(`The key ${key} and the value ${value}`))
-//             console.log(`/`);
+            // console.log(value , 'obj');
+            Object.entries(value).map(([key, value]) => console.log(`The key ${key} and the value ${value}`))
+            console.log(`/`);
             
-//         }else{
-//             console.log(value);
-//             console.log(`/`);
-//         }
-//     })
-// })
+        }else{
+            console.log(value);
+            console.log(`/`);
+        }
+    })
+})
 
 // filter
 
