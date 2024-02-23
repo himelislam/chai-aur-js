@@ -103,7 +103,7 @@ const ltdUsersFinal2 = customers.map((cus) => {
     return cus.pos === 'LTD'
 })
 
-console.log(ltdUsersFinal2);
+// console.log(ltdUsersFinal2)
 
 // const ltdCustomers = customers.map((customer) => {
 //     r
@@ -112,3 +112,11 @@ console.log(ltdUsersFinal2);
 // console.log(ltdUsers);
 
 // reduce, set, sort, function, callback function, self-provoke function, higher order function, 
+
+Array.prototype.myPop(arr){
+    return arr.pop()
+}
+
+const hello = [1,2,3,4,5,6,7,8,9];
+
+console.log(myPop(hello))

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+</head>
+<body>
+    <div>
+        <h1>Hello</h1>
+    </div>
+    <div>
+        <ul>
+            <li><img id="owl" style="width: 200px; height: 200px;" src="https://images.pexels.com/photos/11650554/pexels-photo-11650554.jpeg" alt=""></li>
+            <li><img id="owl" style="width: 200px; height: 200px;" src="https://images.pexels.com/photos/11650554/pexels-photo-11650554.jpeg" alt=""></li>
+            <li><img id="owl" style="width: 200px; height: 200px;" src="https://images.pexels.com/photos/11650554/pexels-photo-11650554.jpeg" alt=""></li>
+            <li><img id="owl" style="width: 200px; height: 200px;" src="https://images.pexels.com/photos/11650554/pexels-photo-11650554.jpeg" alt=""></li>
+        </ul>
+    </div>
+</body>
+<script>
+    // document.getElementById('owl').onclick = function(){
+    //     alert('clicked')
+    // }
+
+    // attachEvent
+    // jQuery - on
+
+
+    document.getElementById('owl').addEventListener('click', function(e){
+        console.log(e);
+    }, false)
+
+    // type, timestamp, defaultPrevented
+    // target, toElement, srcElement, currentTarget
+    // clientX, clientY, screenX, screenY
+    // altkey, ctrlkey, shiftkey, keyCode
+</script>
+</html>
