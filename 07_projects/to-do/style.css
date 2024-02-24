@@ -52,3 +52,7 @@ body{
     margin: 5px;
     list-style-type: none; /* Remove bullets */
 }
+
+.clicked{
+    text-decoration:line-through;
+}
