@@ -56,3 +56,14 @@ body{
 .clicked{
     text-decoration:line-through;
 }
+
+.message{
+    width: 380px;
+    border: 1px solid rgb(215, 215, 215);
+    padding: 15px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: rgb(51, 51, 50);
+    /* margin: 5px; */
+}
