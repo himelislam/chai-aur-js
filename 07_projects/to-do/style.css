@@ -1,0 +1,36 @@
+body{
+    background-color: beige;
+}
+
+.container{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heading{
+    font-size: 40px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 700;
+}
+
+.parent{
+    display: inline;
+}
+
+.todo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.todo-box{
+    width: 380px;
+    padding: 20px;
+    outline: none;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+}
