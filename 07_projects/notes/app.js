@@ -1,19 +1,18 @@
 const addNotesButton = document.getElementById('add-note-button');
-// const textArea = document.getElementById()
 const noteContainer = document.querySelector('.container');
+const removeAllNotesButton = document.querySelector('#remove-button')
 
 
 addNotesButton.addEventListener('click', function(){
-    // console.log('clicked');
-    const noteContainerDiv = document.createElement('div');
+    const noteContainerDiv = createHTML('div')
     noteContainerDiv.classList.add('note-container');
 
-    const textAreaDiv = document.createElement('div');
-    const textArea = document.createElement('textarea');
+    const textAreaDiv = createHTML('div')
+    const textArea = createHTML('textarea')
 
-    const iconDiv = document.createElement('div');
-    const editIcon = document.createElement('a');
-    editIcon.innerText = 'Edit Icon ';
+    const iconDiv = createHTML('div')
+    const editIcon = createHTML('a')
+    editIcon.innerText = 'Edit Note ';
     editIcon.setAttribute('href', '');
 
     editIcon.addEventListener('click', function(e){
@@ -21,12 +20,12 @@ addNotesButton.addEventListener('click', function(){
         if(textArea.hasAttribute('disabled')){
             textArea.removeAttribute('disabled')
         }else{
-            textArea.setAttribute('disabled', '')
+            textArea.setAttribute('disabled', true)
         }
     })
 
-    const deleteIcon = document.createElement('a');
-    deleteIcon.innerText = 'Delete Icon';
+    const deleteIcon = createHTML('a')
+    deleteIcon.innerText = 'Delete Note';
     deleteIcon.setAttribute('href', '');
 
     deleteIcon.addEventListener('click', function(e){
@@ -47,5 +46,14 @@ addNotesButton.addEventListener('click', function(){
     noteContainerDiv.appendChild(textAreaDiv);
 
     noteContainer.appendChild(noteContainerDiv)
+})
 
+function createHTML(tag){
+    return document.createElement(tag);
+}
+
+removeAllNotesButton.addEventListener('click', function(){
+    if(confirm('Are you sure, you want to remove all the notes?')){
+        location.reload()
+    }
 })
