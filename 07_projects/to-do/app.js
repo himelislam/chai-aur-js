@@ -27,8 +27,10 @@ document.addEventListener('keydown', function(e){
         // addedtask.addEventListener('click', function(e){
         //     // console.log(e.target.style.textDecoration = 'line-through');
         //     if(e.target.classList.contains('clicked')){
+        //         console.log('yes');
         //         e.target.classList = 'added-task'
         //     }else{
+        //         console.log('no');
         //         e.target.classList = 'added-task clicked'
         //     }
         // })
