@@ -1,5 +1,6 @@
 const task = document.getElementById('task');
 const tasks = document.querySelector('.tasks');
+const resetButton = document.querySelector('.reset');
 
 document.addEventListener('keydown', function(e){
     
@@ -59,6 +60,10 @@ document.addEventListener('keydown', function(e){
         // })
     }
 });
+
+resetButton.addEventListener('click', function(){
+    location.reload()
+})
 
 
 

@@ -55,6 +55,7 @@ body{
 
 .clicked{
     text-decoration:line-through;
+    color: rgb(139, 139, 139);
 }
 
 .message{
@@ -66,4 +67,20 @@ body{
     font-size: 20px;
     color: rgb(51, 51, 50);
     /* margin: 5px; */
+}
+
+.reset{
+    width: 200px;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;  
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: rgb(51, 51, 50);
+    border-radius: 10px;
+    border: 1px solid rgb(132, 131, 131);
+    margin-top: 15px;
+    cursor: pointer;
 }
