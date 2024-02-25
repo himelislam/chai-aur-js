@@ -9,24 +9,33 @@ document.addEventListener('keydown', function(e){
             const newCreatedTask = document.createElement('li')
             newCreatedTask.innerHTML = newTask;
             newCreatedTask.classList = 'added-task';
+
+            newCreatedTask.addEventListener('click', function(){
+                newCreatedTask.classList.toggle('clicked')
+            })
+
+            newCreatedTask.addEventListener('contextmenu', function(e){
+                e.preventDefault();
+                newCreatedTask.remove()
+            })
             tasks.appendChild(newCreatedTask)
             task.value = '';
         }
         
-        const addedtask = document.querySelector('ul');
-        addedtask.addEventListener('click', function(e){
-            // console.log(e.target.style.textDecoration = 'line-through');
-            if(e.target.classList.contains('clicked')){
-                e.target.classList = 'added-task'
-            }else{
-                e.target.classList = 'added-task clicked'
-            }
-        })
+        // const addedtask = document.querySelector('ul');
+        // addedtask.addEventListener('click', function(e){
+        //     // console.log(e.target.style.textDecoration = 'line-through');
+        //     if(e.target.classList.contains('clicked')){
+        //         e.target.classList = 'added-task'
+        //     }else{
+        //         e.target.classList = 'added-task clicked'
+        //     }
+        // })
 
-        addedtask.addEventListener('contextmenu', function(e){
-            e.preventDefault()
-            console.log(e.target.remove());
-        })
+        // addedtask.addEventListener('contextmenu', function(e){
+        //     e.preventDefault()
+        //     console.log(e.target.remove());
+        // })
 
         // another approach
 
