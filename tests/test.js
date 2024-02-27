@@ -176,3 +176,17 @@
     setInterval(interval(), 1000)
     
 })()
+
+
+
+
+// <style>
+//     @media screen and (max-width: 750px) and (min-width:700px) {
+//     .container {
+//         width: 680px;
+//     }
+//     .dorik-button-n4w0gelw {
+//         margin-right: 10px !important;
+//     }
+// }
+// </style>
