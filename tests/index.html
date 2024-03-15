@@ -116,76 +116,81 @@
 
 
 // function forLoop () {
-    //     const arrayOfNumebers = [1,2,3,4,5,6,7,5,4,3334,4,5,4,3,2];
-    
-    //     let newArray = [];
-    
-    //     for(i = 0; i < arrayOfNumebers.length; i++){
-    //        newArray = [...newArray, arrayOfNumebers[i] += 1];
-    //     }
-    
-    //     return newArray;
-    // }
-    
-    // console.log(forLoop());
-    
+// const arrayOfNumebers = [1,2,3,4,5,6,7,5,4,3334,4,5,4,3,2];
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        const toggleSwitch = document.querySelector('.checkbox');
-        const darkModeElements = document.querySelectorAll('[data-theme="current"]');
-        const nestedPs = document.querySelectorAll('div p');
-        const headings = document.querySelectorAll('.dorik-heading, h1, h2, h3, h4, h5, h6, a > h1, a > h2, a > h3, a > h4, a > h5, a > h6');
-      
-        // Get stored toggle state and theme from localStorage
-        const storedState = localStorage.getItem('toggleState');
-        const storedTheme = localStorage.getItem('theme');
-      
-        if (storedState) {
-          // Set toggle element based on stored state
-          toggleSwitch.checked = storedState === 'true';
-      
-          // Apply stored theme to nested paragraphs (assuming CSS variables are used)
-          document.documentElement.style.setProperty('--theme-mode', storedTheme);
-        }
-      
-        // Check initial state based on document styles (as a fallback)
-        const initialTheme = getComputedStyle(document.documentElement).getPropertyValue('--theme-mode');
-        toggleSwitch.checked = initialTheme === 'light';
-      
-        toggleSwitch.addEventListener('change', () => {
-          const currentTheme = toggleSwitch.checked ? 'light' : 'dark';
-      
-          // Update element styles and nested paragraphs
-          darkModeElements.forEach((element) => {
-            element.dataset.theme = currentTheme; // Update data attribute
-            if (element.dataset.imageBackground) {
-                element.style.backgroundImage = `var(--background-image-hero-${currentTheme}-mode)`;}
-                if (element.dataset.fontColor || element.classList.contains('dorik-title')) {
-                  element.style.color = `var(--text-color-${currentTheme}-mode)`;
-                }
-          });
-      
-          // Update paragraph colors (using CSS variable for consistency)
-          nestedPs.forEach(paragraph => {
-            paragraph.style.color = `var(--text-color-${currentTheme}-mode)`;
-          });
-      
-          // Update heading colors
-          headings.forEach(heading => {
-            heading.style.color = `var(--text-color-${currentTheme}-mode)`;
-          });
-      
-          // Update document-level theme variable
-        document.documentElement.style.setProperty('--theme-mode', currentTheme);
-         //document.body.style.setProperty('background-color', `var(--body-color-${currentTheme}-mode)`);
-    
-      
-          // Store the new toggle state and theme in localStorage
-          localStorage.setItem('toggleState', toggleSwitch.checked);
-          localStorage.setItem('theme', currentTheme);
-        });
-      });
-      
+// let newArray = [];
+
+// for(i = 0; i < arrayOfNumebers.length; i++){ // newArray=[...newArray, arrayOfNumebers[i] +=1]; // } // return
+    newArray; // } // console.log(forLoop()); <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const toggleSwitch = document.querySelector('.checkbox');
+    const darkModeElements = document.querySelectorAll('[data-theme="current"]');
+    const nestedPs = document.querySelectorAll('div p');
+    const headings = document.querySelectorAll('.dorik-heading, h1, h2, h3, h4, h5, h6, a > h1, a > h2, a > h3, a > h4,
+    a > h5, a > h6');
+
+    // Get stored toggle state and theme from localStorage
+    const storedState = localStorage.getItem('toggleState');
+    const storedTheme = localStorage.getItem('theme');
+
+    if (storedState) {
+    // Set toggle element based on stored state
+    toggleSwitch.checked = storedState === 'true';
+
+    // Apply stored theme to nested paragraphs (assuming CSS variables are used)
+    document.documentElement.style.setProperty('--theme-mode', storedTheme);
+    }
+
+    // Check initial state based on document styles (as a fallback)
+    const initialTheme = getComputedStyle(document.documentElement).getPropertyValue('--theme-mode');
+    toggleSwitch.checked = initialTheme === 'light';
+
+    toggleSwitch.addEventListener('change', () => {
+    const currentTheme = toggleSwitch.checked ? 'light' : 'dark';
+
+    // Update element styles and nested paragraphs
+    darkModeElements.forEach((element) => {
+    element.dataset.theme = currentTheme; // Update data attribute
+    if (element.dataset.imageBackground) {
+    element.style.backgroundImage = `var(--background-image-hero-${currentTheme}-mode)`;}
+    if (element.dataset.fontColor || element.classList.contains('dorik-title')) {
+    element.style.color = `var(--text-color-${currentTheme}-mode)`;
+    }
+    });
+
+    // Update paragraph colors (using CSS variable for consistency)
+    nestedPs.forEach(paragraph => {
+    paragraph.style.color = `var(--text-color-${currentTheme}-mode)`;
+    });
+
+    // Update heading colors
+    headings.forEach(heading => {
+    heading.style.color = `var(--text-color-${currentTheme}-mode)`;
+    });
+
+    // Update document-level theme variable
+    document.documentElement.style.setProperty('--theme-mode', currentTheme);
+    //document.body.style.setProperty('background-color', `var(--body-color-${currentTheme}-mode)`);
+
+
+    // Store the new toggle state and theme in localStorage
+    localStorage.setItem('toggleState', toggleSwitch.checked);
+    localStorage.setItem('theme', currentTheme);
+    });
+    });
+
     </script>
-    
+
+
+    <div class="dorik-list--lists"><span class="dorik-list--icon"><svg aria-hidden="true" focusable="false"
+                data-prefix="far" data-icon="compass" class="svg-inline--fa fa-compass fa-fw icon icon_3hmbugvr"
+                role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-testid="icon-test">
+                <path fill="currentColor"
+                    d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm306.7 69.1L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z">
+                </path>
+            </svg></span><span path="lists/items/0/content" class="dorik-list--text"
+            typekey="dorik-lists-2fkg9xg4-list-3hmbugvr" strings="<p>This is a list itemlkajsdlfkjasldkjfasdlk[aoisdjfpalksdjf[ asdfi<br>;laskjdfalskdjf<br>Plajsdasd;lfkjasdf<br>;laksdjfa[sdkfjasdfiasdf</p>
+        ">
+            <p>This is a list itemlkajsdlfkjasldkjfasdlkaoisdjfpalksdjf
+                asdfi<br>;laskjdfalskdjf<br>Plajsdasd;lfkjasdf<br>;laksdjfaßdkfjasdfiasdf</p>
+        </span></div>
