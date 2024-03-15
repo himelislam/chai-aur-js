@@ -36,9 +36,10 @@
     }
 
     document.querySelector('#start').addEventListener('click', function () {
-        const intervalID = setInterval(printDate, 1000, "Third Param as String");
+        let intervalID = setInterval(printDate, 1000);
         document.querySelector('#stop').addEventListener('click', function () {
             clearInterval(intervalID)
+            intervalID = null;
         })
     })
 </script>
