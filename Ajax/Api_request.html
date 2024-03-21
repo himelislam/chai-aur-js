@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Api Request</title>
+</head>
+<body style="background-color: #212121; color: white;">
+    <div id="container">
+        <button id="button">Click Here</button>
+    </div>
+</body>
+<script>
+    let data;
+    const requestURL = "https://api.github.com/users/himelislam";
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', requestURL);
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState === 4){
+            data = JSON.parse(this.responseText);
+        }
+    }
+    xhr.send()
+
+    const container = document.querySelector('#container')
+    const button  = document.querySelector("#button").addEventListener('click', function(){
+        console.log("Hello");
+        const div = document.createElement('div');
+        const h1 = document.createElement('h1');
+        const image = document.createElement('img');
+
+        h1.innerHTML = data.name;
+        image.setAttribute('src', data.avatar_url);
+        div.appendChild(h1);
+        div.appendChild(image);
+
+        container.appendChild(div)
+    })
+</script>
+</html>
