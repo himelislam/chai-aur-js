@@ -15,4 +15,21 @@ function vowelCounts(sentence){
     return count;
 }
 
-console.log(vowelCounts('Heallo Bangladesh'));
+// console.log(vowelCounts('Heallo Bangladesh'));
+
+
+// different solution
+
+function vowelCountsTwo(sentence){
+    let count = 0;
+    const letters = Array.from(sentence);
+    
+    letters.forEach((letter)=>{
+        if(vowels.includes(letter)){
+            count++;
+        }
+    })
+    return count;
+}
+
+console.log(vowelCountsTwo('Hello A E I O U'));
