@@ -50,12 +50,27 @@
     // }
 
     // console.log(username);
-    console.log(apple);
-    console.log(apple2);
+    // console.log(apple);
+    // console.log(apple2);
 
-    const apple = "himel";
-    var apple2 = "alloe"
+    // const apple = "himel";
+    // var apple2 = "alloe"
 
+    function outer(){
+        const closure = 'for inner'
+        function inner(){
+            console.log(a);
+            console.log(closure);
+        }
+        var a = 10;
+        function innertwo(){
+            console.log(closure);
+        }
+        // innertwo();
+        return inner;
+    }
+
+    outer()();
     // const obj = {
     //     name: "Himel",
     //     roll: 1233,

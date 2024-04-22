@@ -12,3 +12,15 @@
         
     };
 </script> */}
+
+{/* <script src="https://arlingtonfinancial.com/js/jquery.min.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> */}
+
+<style>
+[data-link-display="inline-block"]{
+a {
+display: inline-block;
+width: 100%;
+}
+}
+</style>
