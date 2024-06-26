@@ -1,0 +1,158 @@
+<!--
+// v0 by Vercel.
+// https://v0.dev/t/LDqsFOBuzjS
+-->
+
+<div class="border rounded-lg overflow-hidden">
+  <div class="relative w-full overflow-auto">
+    <table class="w-full caption-bottom text-sm">
+      <thead class="[&amp;_tr]:border-b">
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted bg-gray-900 text-white">
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            Description
+          </th>
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            Meta Cloud
+          </th>
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            Azure
+          </th>
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            AWS
+          </th>
+        </tr>
+      </thead>
+      <tbody class="[&amp;_tr:last-child]:border-0">
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Compute</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Facebook Compute</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Virtual Machines</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">EC2</td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Storage</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Facebook Storage</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Blob Storage</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">S3</td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Database</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Facebook Database</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Cosmos DB</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">RDS</td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Networking</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Facebook Networking</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Virtual Network</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">VPC</td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Security</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Facebook Security</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Key Vault</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">IAM</td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Analytics</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Facebook Analytics</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Synapse Analytics</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Athena</td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">AI/ML</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Facebook AI/ML</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Cognitive Services</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">SageMaker</td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Serverless</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Facebook Serverless</td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Functions</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  /**
+ * v0 by Vercel.
+ * @see https://v0.dev/t/LDqsFOBuzjS
+ * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
+ */
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
+
+export default function Component() {
+  return (
+    <div className="border rounded-lg overflow-hidden">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-gray-900 text-white">
+            <TableHead>Description</TableHead>
+            <TableHead>Meta Cloud</TableHead>
+            <TableHead>Azure</TableHead>
+            <TableHead>AWS</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>Compute</TableCell>
+            <TableCell>Facebook Compute</TableCell>
+            <TableCell>Virtual Machines</TableCell>
+            <TableCell>EC2</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Storage</TableCell>
+            <TableCell>Facebook Storage</TableCell>
+            <TableCell>Blob Storage</TableCell>
+            <TableCell>S3</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Database</TableCell>
+            <TableCell>Facebook Database</TableCell>
+            <TableCell>Cosmos DB</TableCell>
+            <TableCell>RDS</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Networking</TableCell>
+            <TableCell>Facebook Networking</TableCell>
+            <TableCell>Virtual Network</TableCell>
+            <TableCell>VPC</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Security</TableCell>
+            <TableCell>Facebook Security</TableCell>
+            <TableCell>Key Vault</TableCell>
+            <TableCell>IAM</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Analytics</TableCell>
+            <TableCell>Facebook Analytics</TableCell>
+            <TableCell>Synapse Analytics</TableCell>
+            <TableCell>Athena</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>AI/ML</TableCell>
+            <TableCell>Facebook AI/ML</TableCell>
+            <TableCell>Cognitive Services</TableCell>
+            <TableCell>SageMaker</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Serverless</TableCell>
+            <TableCell>Facebook Serverless</TableCell>
+            <TableCell>Functions</TableCell>
+            <TableCell>Lambda</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Containers</TableCell>
+            <TableCell>Facebook Containers</TableCell>
+            <TableCell>Container Instances</TableCell>
+            <TableCell>ECS</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+  )
+}
+</script>

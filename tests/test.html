@@ -1,0 +1,521 @@
+<!-- <script>
+    (function () {
+        const hideExtraBanners = () => {
+            console.log(object);
+        };
+        hideExtraBanners();
+        const observer = new MutationObserver((mutations) => {
+            hideExtraBanners();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    })();
+</script>
+
+
+
+<table class="countdownContainer">
+
+	<tr class="info">
+	<td id="days" class="pad">120</td>
+	<td> : </td>
+	<td id="hours" class="pad">4</td>
+	<td> : </td>
+	<td id="minutes" class="pad">12</td>
+	<td> : </td>
+	<td id="seconds" class="pad">22</td>
+	</tr>
+	<tr>
+	<td>Giorni</td>
+	<td> : </td>
+	<td>Ore</td>
+	<td> : </td>
+	<td>Minuti</td>
+	<td> : </td>
+	<td>Secondi</td>
+	</tr>
+</table> -->
+
+<script>
+
+//console.log('CAZZOOO DI COUNTDOWN')
+//window.addEventListener('load', function() {
+	function countdown(){
+		//console.log('DataMinuti', "{{DataMinuti}}");
+		var dataMinuti = Number("{{Number}}") + 0;
+		if((dataMinuti <= 9) && (dataMinuti >= 1 )){
+			//console.log('DataMinuti tra 1 e 9');
+			dataMinuti = "0"+dataMinuti;
+		} else if((dataMinuti === 0) || (dataMinuti === null) || (dataMinuti === undefined)){
+			//console.log('DataMinuti è 0');
+			dataMinuti = "00";
+		} else{
+			//console.log('DataMinuti maggiore di 10');
+		}
+		//console.log('DataMinuti Aggiornati: ', dataMinuti);
+		var eventDate = new Date(Number("{{Number2}}"), Number("{{Number2}}")-1, Number("{{Number2}}"), Number("{{Number2}}"), dataMinuti, 0);
+		var now = new Date();
+		//var eventDate = new Date(`{{DataAnno}}`, `{{DataMese}}`, `{{DataGiorno}}`, `{{Dataore}}`, `{{DataMinuti}}`, 0);
+		//var eventDate = new Date({{DataAnno}}, {{DataMese}}-1, {{DataGiorno}}, {{Dataore}}, {{DataMinuti}}, 0);
+		//console.log("Data impostata: ", eventDate);
+		var currentTiime = now.getTime();
+		var eventTime = eventDate.getTime();
+		
+		var remTime = eventTime - currentTiime;
+		
+		var s = Math.floor(remTime / 1000);
+		var m = Math.floor(s / 60);
+		var h = Math.floor(m / 60);
+		var d = Math.floor(h / 24);
+		
+		h %= 24;
+		m %= 60;
+		s %= 60;
+		
+		h = (h < 10) ? "0" + h : h;
+		m = (m < 10) ? "0" + m : m;
+		s = (s < 10) ? "0" + s : s;
+		
+		document.getElementById("days").textContent = d;
+		document.getElementById("days").innerText = d;
+		
+		document.getElementById("hours").textContent = h;
+		document.getElementById("minutes").textContent = m;
+		document.getElementById("seconds").textContent = s;
+		
+		// imposto visibilita oggetti
+		var sectionLoading = document.getElementById("section-loading");
+		var rowCountdownEvento = document.getElementById("sec-countdown");
+		var rowTextEndCountdownEvento = document.getElementById("sec-endcountdown");
+		var formPrenotazioneEvento = document.getElementById("form-prenotazione-evento");
+		
+		if(remTime <= 0){
+			rowCountdownEvento.style.display = "none";
+			rowTextEndCountdownEvento.style.display = "table";
+			formPrenotazioneEvento.style.display = "none";
+			sectionLoading.style.display = "none";
+		} else {
+			rowCountdownEvento.style.display = "table";
+			rowTextEndCountdownEvento.style.display = "none";
+			formPrenotazioneEvento.style.display = "table";
+			sectionLoading.style.display = "none";
+		}
+		
+		setTimeout(countdown, 1000);
+	}
+	
+	countdown();
+//})
+
+function countdown() {
+    var dataMinuti = Number("{{Number}}"); // Replace "12" with your dynamic value
+
+    if ((dataMinuti <= 9) && (dataMinuti >= 1)) {
+        dataMinuti = "0" + dataMinuti;
+    } else if ((dataMinuti === 0) || (dataMinuti === null) || (dataMinuti === undefined)) {
+        dataMinuti = "00";
+    } else {
+        dataMinuti = dataMinuti.toString(); // Ensure dataMinuti is a string
+    }
+
+    var year = Number("{{Number}}"); // Replace "12" with your dynamic value
+    var month = Number("{{Number}}") - 1; // JavaScript months are 0-11
+    var day = Number("{{Number}}"); // Replace "12" with your dynamic value
+    var hour = Number("{{Number}}"); // Replace "12" with your dynamic value
+    var minute = Number("{{Number}}"); // Replace "12" with your dynamic value or dataMinuti
+
+    // Ensure minute is a number
+    minute = isNaN(minute) ? Number(dataMinuti) : minute;
+
+    // Create the event date with numeric values
+    var eventDate = new Date(year, month, day, hour, minute, 0);
+    console.log(year, month, day, hour, minute, "dates");
+
+    var now = new Date();
+    var currentTime = now.getTime();
+    var eventTime = eventDate.getTime();
+
+    var remTime = eventTime - currentTime;
+
+    var s = Math.floor(remTime / 1000);
+    var m = Math.floor(s / 60);
+    var h = Math.floor(m / 60);
+    var d = Math.floor(h / 24);
+    console.log(s, m, h, d, "asdads");
+
+    h %= 24;
+    m %= 60;
+    s %= 60;
+
+    h = (h < 10) ? "0" + h : h;
+    m = (m < 10) ? "0" + m : m;
+    s = (s < 10) ? "0" + s : s;
+
+    console.log(s, m, h, d, "aGGGads");
+
+    document.getElementById("days").textContent = d;
+    document.getElementById("hours").textContent = h;
+    document.getElementById("minutes").textContent = m;
+    document.getElementById("seconds").textContent = s;
+
+    // Imposto visibilita oggetti
+    var sectionLoading = document.getElementById("section-loading");
+    var rowCountdownEvento = document.getElementById("sec-countdown");
+    var rowTextEndCountdownEvento = document.getElementById("sec-endcountdown");
+    var formPrenotazioneEvento = document.getElementById("form-prenotazione-evento");
+
+    if (remTime <= 0) {
+        rowCountdownEvento.style.display = "none";
+        rowTextEndCountdownEvento.style.display = "block"; // Changed from "table" to "block"
+        formPrenotazioneEvento.style.display = "none";
+        sectionLoading.style.display = "none";
+    } else {
+        rowCountdownEvento.style.display = "block"; // Changed from "table" to "block"
+        rowTextEndCountdownEvento.style.display = "none";
+        formPrenotazioneEvento.style.display = "block"; // Changed from "table" to "block"
+        sectionLoading.style.display = "none";
+    }
+
+    setTimeout(countdown, 1000);
+}
+
+countdown();
+
+
+
+// function countdown() {
+//     // Assuming that {{Number}} and {{Number2}} are replaced correctly
+//     var dataMinuti = Number("{{Number}}");
+
+//     if ((dataMinuti <= 9) && (dataMinuti >= 1)) {
+//         dataMinuti = "0" + dataMinuti;
+//     } else if ((dataMinuti === 0) || (dataMinuti === null) || (dataMinuti === undefined)) {
+//         dataMinuti = "00";
+//     }
+
+//     // Correctly handle placeholder values for eventDate
+//     var year = Number("{{Number2}}");
+//     var month = Number("{{Number2}}") - 1; // JavaScript months are 0-11
+//     var day = Number("{{Number2}}");
+//     var hour = Number("{{Number2}}");
+//     var minute = Number("{{Number2}}") || dataMinuti;
+
+//     minute = isNaN(minute) ? Number(dataMinuti) : minute;
+//     // Ensure dataMinuti is numeric before creating the date
+//     var eventDate = new Date(year, month, day, hour, minute, 0);
+//     console.log(year, month, day, hour, minute, "dates");
+
+//     var now = new Date();
+//     var currentTime = now.getTime();
+//     var eventTime = eventDate.getTime();
+
+//     var remTime = eventTime - currentTime;
+
+//     var s = Math.floor(remTime / 1000);
+//     var m = Math.floor(s / 60);
+//     var h = Math.floor(m / 60);
+//     var d = Math.floor(h / 24);
+
+//     console.log(s,m,h,d, "asdads");
+
+
+
+//     h %= 24;
+//     m %= 60;
+//     s %= 60;
+
+//     h = (h < 10) ? "0" + h : h;
+//     m = (m < 10) ? "0" + m : m;
+//     s = (s < 10) ? "0" + s : s;
+
+//     document.getElementById("days").textContent = d;
+//     document.getElementById("hours").textContent = h;
+//     document.getElementById("minutes").textContent = m;
+//     document.getElementById("seconds").textContent = s;
+
+//     // Imposto visibilita oggetti
+//     var sectionLoading = document.getElementById("section-loading");
+//     var rowCountdownEvento = document.getElementById("sec-countdown");
+//     var rowTextEndCountdownEvento = document.getElementById("sec-endcountdown");
+//     var formPrenotazioneEvento = document.getElementById("form-prenotazione-evento");
+
+//     if (remTime <= 0) {
+//         rowCountdownEvento.style.display = "none";
+//         rowTextEndCountdownEvento.style.display = "block"; // Changed from "table" to "block"
+//         formPrenotazioneEvento.style.display = "none";
+//         sectionLoading.style.display = "none";
+//     } else {
+//         rowCountdownEvento.style.display = "block"; // Changed from "table" to "block"
+//         rowTextEndCountdownEvento.style.display = "none";
+//         formPrenotazioneEvento.style.display = "block"; // Changed from "table" to "block"
+//         sectionLoading.style.display = "none";
+//     }
+
+//     setTimeout(countdown, 1000);
+// }
+
+// countdown();
+
+
+
+console.log('SCRIPT Eventi v9.10');
+
+//window.addEventListener('load', function() {
+	console.log('DOM pronto per Evento!');
+		
+	var eventoName = "{{name}}";
+	var eventoSlug = "{{slug}}";
+	var gameMasterNome = "{{GameMaster.name}}";
+	var gameMasterPianoAbbonamento = "{{GameMaster.AbbonamentodelGameMaster}}";
+	var tipologiaLuogoEvento = "{{TipologiaLuogoEvento}}";
+	var tipologiaEvento = "{{TipologiaEvento}}"; // Aperto o Prenotazione
+	var eventoLocation = "{{location}}";
+	
+	var dataInizioEvento = "{{DataGiorno}}"+"/"+"{{DataMese}}"+"/"+"{{DataAnno}}"+"  "+"{{Dataore}}"+":"+"{{DataMinuti}}";
+	var numerodiPostiDisponibili = "{{NumerodiPostiDisponibili}}";
+	
+	var numerodiPostiTotali = "{{NumerodipartecipantiTotaleinclusoilGM}}";	
+	var eventoGioco = "{{Giocoogiochi}}";
+	var eventoIDEvento = "{{IDEvento}}";
+	var eventoIDGameMaster = "{{GameMaster.UIDGameMaster}}";
+	
+	//var sectionLoading = document.getElementById("section-loading");
+	//var rowCountdownEvento = document.getElementById("sec-countdown");
+	//var rowTextEndCountdownEvento = document.getElementById("sec-endcountdown");
+	
+	var locationConvenzionataTitolo = document.getElementById("location-convenzionata-titolo");
+	var locationConvenzionataImg = document.getElementById("location-convenzionata-img");
+	
+	var sezioneDettagliDue = document.getElementById("striscia-dettagli-due");
+	//   var sezioneDettagliTre = document.getElementById("striscia-dettagli-tre");
+	var sezioneVideoFeedSocial = document.getElementById("video-feed-social");
+	
+	var formPrenotazioneEvento = document.getElementById("form-prenotazione-evento");
+	//var bannerEventoAperto = document.getElementById("banner-evento-aperto");
+	var bottonePrenotaEvento = document.getElementById("bottone-prenota-evento");
+	var formSlugEvento  = document.getElementById("form-slug-evento");
+	var formEventoNome = document.getElementById("form-nome-evento");
+	var formEventoData = document.getElementById("form-data-evento");
+	var formEventoGameMaster = document.getElementById("form-gm-evento");
+	var formEventoLocation = document.getElementById("form-location-evento");
+	var formNumeroPartecipanti= document.getElementById("form-numero-partecipanti");
+	
+	var formTipoLocation = document.getElementById("form-tipo-location");
+	var formGioco = document.getElementById("form-gioco");
+	var formIdEvento = document.getElementById("form-id-evento");
+	var formIdGamemaster = document.getElementById("form-id-gamemaster");
+	var formEventoPostitotali = document.getElementById("form-evento-postitotali");
+	var formEventoPostidisponibili = document.getElementById("form-evento-postidisponibili");
+	
+	console.log('Evento Name: ', eventoName);
+	
+	// Settaggio base della pagina
+	console.log("Settaggio di Base con GM Free - Evento GM con piano di sottoscrizione GM: ", gameMasterPianoAbbonamento);
+	
+	//rowCountdownEvento.style.display = "none";
+	//console.log('Settaggio Blocco 1 rowCountdownEvento');
+	//rowTextEndCountdownEvento.style.display = "none";
+	//console.log('Settaggio Blocco 1 rowTextEndCountdownEvento');
+	sezioneDettagliDue.style.display = "none";
+	console.log('Settaggio Blocco 1 sezioneDettagliDue');
+	//sezioneDettagliTre.style.display = "none";
+	sezioneVideoFeedSocial.style.display = "none";
+	console.log('Settaggio Blocco 1 sezioneVideoFeedSocial');
+	console.log('Settaggio Blocco 1 completato');
+	
+	// Configurazione modulo
+	formSlugEvento.style.display = "none";
+	formSlugEvento.value = eventoSlug;
+	formTipoLocation.value = tipologiaLuogoEvento;
+	
+	console.log('Settaggio Blocco 2 completato');
+	
+	formEventoNome.value = eventoName;
+	formEventoData.value = dataInizioEvento;
+	formEventoGameMaster.value = gameMasterNome;
+	formNumeroPartecipanti.value = "1";
+	formNumeroPartecipanti.min = "1";
+	formNumeroPartecipanti.max = numerodiPostiDisponibili;
+	
+	console.log('Settaggio Blocco 3 completato');
+	
+	// Settaggio e nascondi dati aggiuntivi form
+	formGioco.style.display = "none"; 
+	formIdEvento.style.display = "none"; 
+	formIdGamemaster.style.display = "none"; 
+	formEventoPostitotali.style.display = "none";
+	formEventoPostidisponibili.style.display = "none";
+	
+	console.log('Settaggio Blocco 4 completato');
+	
+	formGioco.value = eventoGioco;
+	formIdEvento.value = eventoIDEvento;
+	formIdGamemaster.value = eventoIDGameMaster;
+	formEventoPostitotali.value = numerodiPostiTotali;
+	formEventoPostidisponibili.value = numerodiPostiDisponibili;
+	
+	console.log('Settaggio Blocco 5 completato');
+	
+	var locationValue = eventoLocation;
+	formEventoLocation.value = locationValue;
+	if(tipologiaLuogoEvento === "Location Convenzionata"){
+		//locationValue = tipologiaLuogoEvento + " - " +  "{{InunaLocationConvenzionata.name}}";
+		locationConvenzionataTitolo.style.display = "table"; 
+		locationConvenzionataImg.style.display = "table";
+	} else {
+		//locationValue = tipologiaLuogoEvento + " - Del GameMaster";
+		locationConvenzionataTitolo.style.display = "none"; 
+		locationConvenzionataImg.style.display = "none";
+	}
+	
+	console.log('---> tipologiaEvento: ', tipologiaEvento);
+	if(tipologiaEvento == 'Aperto'){
+		//bannerEventoAperto.style.display = "table";
+		formPrenotazioneEvento.style.display = "none";
+		bottonePrenotaEvento.style.display = "none";
+	} else {
+		//bannerEventoAperto.style.display = "none";
+		formPrenotazioneEvento.style.display = "table";
+	}
+	
+	formEventoNome.addEventListener('keydown', function(event) {
+		event.preventDefault();  // Questo impedisce l'input di qualsiasi carattere
+	});
+	formEventoData.addEventListener('keydown', function(event) {
+		event.preventDefault();  // Questo impedisce l'input di qualsiasi carattere
+	});
+	formEventoGameMaster.addEventListener('keydown', function(event) {
+		event.preventDefault();  // Questo impedisce l'input di qualsiasi carattere
+	});
+	formEventoLocation.addEventListener('keydown', function(event) {
+		event.preventDefault();  // Questo impedisce l'input di qualsiasi carattere
+	});
+	formTipoLocation.addEventListener('keydown', function(event) {
+		event.preventDefault();  // Questo impedisce l'input di qualsiasi carattere
+	});
+	console.log("Settagio di base completato");
+
+   if(gameMasterPianoAbbonamento === "Silver"){
+       console.log('GameMaster Piano Silver');
+       sezioneDettagliDue.style.display = "table";
+       //sezioneDettagliTre.style.display = "none";
+       sezioneVideoFeedSocial.style.display = "none";
+       console.log('GameMaster Piano Silver - Completato');
+   
+   } else if(gameMasterPianoAbbonamento === "Gold") {
+       console.log('GameMaster Piano Gold');
+       sezioneDettagliDue.style.display = "table";
+       //sezioneDettagliTre.style.display = "table";
+       sezioneVideoFeedSocial.style.display = "table";
+       console.log('GameMaster Piano Gold - Completato');
+   } else {
+       console.log('GameMaster Piano Free');
+       
+   }
+   
+   console.log("FINE SCRIPT Evento e rimozione loding");	
+//})
+
+
+;(function() {
+    var targetOrigin = 'https://immobilien.wehrhahn-immobilien.de/immobilien/',
+        source = 'wp-immomakler';
+
+    function addPaginationChangedEvent() {
+        jQuery('.paginator .pages-nav a.page-numbers').click(function() {
+            var offTop = jQuery('.paginator').first().offset().top,
+                data = {
+                    source: source,
+                    event: 'pagination-change',
+                    paginatorOffTop: offTop,
+                    updatedURL: window.location.href
+                };
+
+            window.parent.postMessage(data, targetOrigin);
+
+            setTimeout(addPaginationChangedEvent, 1000);
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function(event) {
+        addPaginationChangedEvent();
+    });
+
+    window.addEventListener('beforeunload', function() {
+        var data = {
+            source: source,
+            event: 'iframe-change'
+        };
+
+        window.parent.postMessage(data, targetOrigin);
+    });
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+var iframe = document.getElementById('myIframe');
+var container = document.getElementsByClassName('dorik-iframe')
+
+function setIframeHeight() {
+    iframe.onload = function() {
+        var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframe.style.height = iframeDoc.body.scrollHeight + 'px';
+    };
+}
+
+window.addEventListener('resize', setIframeHeight);
+setIframeHeight(); // Initial call
+
+
+
+var iframe = document.getElementById('myIframe');
+var container = document.getElementsByClassName('dorik-iframe')
+
+    function setIframeHeight() {
+        var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        container.style.height = iframeDoc.body.scrollHeight + 'px';
+    }
+
+    iframe.addEventListener('load', setIframeHeight); // Adjust height on load
+    window.addEventListener('resize', setIframeHeight); // Adjust height on window resize
+
+    setIframeHeight();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
