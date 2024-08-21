@@ -1,0 +1,603 @@
+{
+    "content": [
+        {
+            "symbolId": "d2622674-34b2-4bc0-b2da-215bf8cbdd1a",
+            "id": "uo7sg1f7"
+        },
+        {
+            "name": "Section",
+            "content": [
+                {
+                    "name": "Row",
+                    "type": "row",
+                    "content": [
+                        {
+                            "name": "Column",
+                            "style": {
+                                "padding": [
+                                    [
+                                        "top",
+                                        "15px"
+                                    ],
+                                    [
+                                        "bottom",
+                                        "15px"
+                                    ]
+                                ]
+                            },
+                            "content": [
+                                {
+                                    "name": "Title",
+                                    "titleType": "h1",
+                                    "type": "heading",
+                                    "_elType": "ELEMENT",
+                                    "component_path": "title",
+                                    "content": "<p>🔴 Live démo Airplan</p>\n",
+                                    "settings": {
+                                        "dynamicText": {
+                                            "_enabled": false
+                                        }
+                                    },
+                                    "dynamicText": {
+                                        "items": [
+                                            {
+                                                "id": "hfgvo35u",
+                                                "content": "<p>Lorem ipsum sd sd</p>\n"
+                                            },
+                                            {
+                                                "id": "hfgvo35i",
+                                                "content": "dolor sit amet"
+                                            },
+                                            {
+                                                "id": "hfgvo35j",
+                                                "content": "consectetur adipiscing"
+                                            }
+                                        ],
+                                        "options": {
+                                            "typeSpeed": 50,
+                                            "loop": true,
+                                            "backSpeed": 40,
+                                            "showCursor": true,
+                                            "cursorChar": true
+                                        }
+                                    },
+                                    "id": "w1412i3j",
+                                    "style": {
+                                        "margin": [
+                                            [
+                                                "top",
+                                                ""
+                                            ],
+                                            [
+                                                "bottom",
+                                                "10px"
+                                            ]
+                                        ],
+                                        "color": {
+                                            "value": "#555555",
+                                            "key": "--color-4"
+                                        },
+                                        "textAlign": "left"
+                                    }
+                                },
+                                {
+                                    "name": "Title",
+                                    "titleType": "h2",
+                                    "type": "heading",
+                                    "_elType": "ELEMENT",
+                                    "component_path": "title",
+                                    "content": "<p>Mercredi 21 août de 11h30 à 12h</p>\n",
+                                    "settings": {
+                                        "dynamicText": {
+                                            "_enabled": false
+                                        }
+                                    },
+                                    "dynamicText": {
+                                        "items": [
+                                            {
+                                                "id": "hfgvo35u",
+                                                "content": "Lorem ipsum"
+                                            },
+                                            {
+                                                "id": "hfgvo35i",
+                                                "content": "dolor sit amet"
+                                            },
+                                            {
+                                                "id": "hfgvo35j",
+                                                "content": "consectetur adipiscing"
+                                            }
+                                        ],
+                                        "options": {
+                                            "typeSpeed": 50,
+                                            "loop": true,
+                                            "backSpeed": 40,
+                                            "showCursor": true,
+                                            "cursorChar": true
+                                        }
+                                    },
+                                    "id": "eh4wdnsh"
+                                },
+                                {
+                                    "type": "text",
+                                    "name": "Text",
+                                    "_elType": "ELEMENT",
+                                    "content": "<p>Au programme:</p>\n<p>✈️ Découvrez comment Airplan peut vous épargner des heures d'encodage administratif</p>\n<p>✈️ Comment éviter les erreurs dans votre Permis d'Urbanisme<br>✈️ Découverte de l'étude de faisabilité Airplan</p>\n<p>✈️ Démonstration pas à pas</p>\n<p>✈️ Les réponses à toutes vos questions</p>\n<p><br>⏱️ Durée : 20 min. + Q&amp;A</p>\n<p></p>\n<p></p>\n",
+                                    "component_path": "text",
+                                    "id": "8dpqko9q",
+                                    "style": {
+                                        "color": {
+                                            "value": "#555555",
+                                            "key": "--color-4"
+                                        },
+                                        "fontSize": "15px",
+                                        "lineHeight": "1.8",
+                                        "textAlign": "left"
+                                    }
+                                }
+                            ],
+                            "id": "m0lsicj6",
+                            "_elType": "COLUMN",
+                            "type": "column",
+                            "component_path": "column",
+                            "attr": {
+                                "__class__columnSize": "2/3"
+                            }
+                        },
+                        {
+                            "name": "Column",
+                            "style": {
+                                "padding": [
+                                    [
+                                        "top",
+                                        "15px"
+                                    ],
+                                    [
+                                        "bottom",
+                                        "15px"
+                                    ],
+                                    [
+                                        "left",
+                                        "15px"
+                                    ],
+                                    [
+                                        "right",
+                                        "15px"
+                                    ]
+                                ],
+                                "textAlign": "center",
+                                "justifyContent": "flex-start",
+                                "boxShadow": {
+                                    "type": "none",
+                                    "blur": "5px",
+                                    "spread": "8px",
+                                    "color": {
+                                        "value": "#EDEDED",
+                                        "key": "--color-7"
+                                    }
+                                },
+                                "borderRadius": "5px 5px 5px 5px"
+                            },
+                            "content": [
+                                {
+                                    "name": "Title",
+                                    "titleType": "h2",
+                                    "type": "heading",
+                                    "_elType": "ELEMENT",
+                                    "component_path": "title",
+                                    "content": "<p>S'inscrire à la démo</p>\n",
+                                    "settings": {
+                                        "dynamicText": {
+                                            "_enabled": false
+                                        }
+                                    },
+                                    "dynamicText": {
+                                        "items": [
+                                            {
+                                                "id": "hfgvo35u",
+                                                "content": "Lorem ipsum"
+                                            },
+                                            {
+                                                "id": "hfgvo35i",
+                                                "content": "dolor sit amet"
+                                            },
+                                            {
+                                                "id": "hfgvo35j",
+                                                "content": "consectetur adipiscing"
+                                            }
+                                        ],
+                                        "options": {
+                                            "typeSpeed": 50,
+                                            "loop": true,
+                                            "backSpeed": 40,
+                                            "showCursor": true,
+                                            "cursorChar": true
+                                        }
+                                    },
+                                    "id": "k57oyon9"
+                                },
+                                {
+                                    "type": "iframe",
+                                    "name": "Iframe",
+                                    "_elType": "ELEMENT",
+                                    "component_path": "iframe",
+                                    "attr": {
+                                        "height": "440",
+                                        "width": "480",
+                                        "src": "https://tally.so/embed/mY5GaB?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+                                    },
+                                    "id": "ae80mgdz"
+                                }
+                            ],
+                            "id": "sd6nm06e",
+                            "_elType": "COLUMN",
+                            "type": "column",
+                            "component_path": "column",
+                            "attr": {
+                                "__class__columnSize": "1/3"
+                            }
+                        }
+                    ],
+                    "id": "tygbag5d",
+                    "_elType": "ROW",
+                    "component_path": "row",
+                    "style": {
+                        "border": [
+                            [
+                                "width",
+                                "1px"
+                            ],
+                            [
+                                "style",
+                                "solid"
+                            ],
+                            [
+                                "color",
+                                "#F2F2F2"
+                            ]
+                        ],
+                        "boxShadow": {
+                            "type": "",
+                            "blur": "24px",
+                            "spread": "3px",
+                            "color": "rgba(0, 0, 0, 0.07)"
+                        },
+                        "borderRadius": "5px 5px 5px 5px",
+                        "padding": [
+                            [
+                                "left",
+                                "20px"
+                            ],
+                            [
+                                "right",
+                                "20px"
+                            ]
+                        ]
+                    },
+                    "settings": {
+                        "popupPreview": false
+                    }
+                }
+            ],
+            "id": "wkcfmu9k",
+            "type": "section",
+            "_elType": "SECTION",
+            "component_path": "section",
+            "style": {
+                "margin": [
+                    [
+                        "bottom",
+                        "120px"
+                    ]
+                ]
+            }
+        },
+        {
+            "name": "Section",
+            "content": [
+                {
+                    "name": "Row",
+                    "type": "row",
+                    "content": [
+                        {
+                            "name": "Column",
+                            "style": {
+                                "padding": [
+                                    [
+                                        "top",
+                                        "15px"
+                                    ],
+                                    [
+                                        "bottom",
+                                        "15px"
+                                    ]
+                                ]
+                            },
+                            "content": [
+                                {
+                                    "name": "Title",
+                                    "titleType": "h1",
+                                    "type": "heading",
+                                    "_elType": "ELEMENT",
+                                    "component_path": "title",
+                                    "content": "<p>🎥 Vidéo de démo Airplan</p>\n",
+                                    "settings": {
+                                        "dynamicText": {
+                                            "_enabled": false
+                                        }
+                                    },
+                                    "dynamicText": {
+                                        "items": [
+                                            {
+                                                "id": "hfgvo35u",
+                                                "content": "<p>Lorem ipsum sd sd</p>\n"
+                                            },
+                                            {
+                                                "id": "hfgvo35i",
+                                                "content": "dolor sit amet"
+                                            },
+                                            {
+                                                "id": "hfgvo35j",
+                                                "content": "consectetur adipiscing"
+                                            }
+                                        ],
+                                        "options": {
+                                            "typeSpeed": 50,
+                                            "loop": true,
+                                            "backSpeed": 40,
+                                            "showCursor": true,
+                                            "cursorChar": true
+                                        }
+                                    },
+                                    "id": "029yg0ko",
+                                    "style": {
+                                        "margin": [
+                                            [
+                                                "top",
+                                                ""
+                                            ],
+                                            [
+                                                "bottom",
+                                                "10px"
+                                            ]
+                                        ],
+                                        "color": "",
+                                        "textAlign": "left",
+                                        "fontSize": "37px",
+                                        "textTransform": "none"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "name": "Text",
+                                    "_elType": "ELEMENT",
+                                    "content": "<p>Découvrez :</p>\n<p>✈️ Comment Airplan peut vous épargner des heures d'encodage administratif</p>\n<p>✈️ Comment éviter les erreurs dans votre Permis d'Urbanisme</p>\n<p>✈️ Comment Airplan fonctionne</p>\n<p>✈️ La dernière fonctionnalité : l'étude de faisabilité</p>\n<p><br>⏱️ Durée : 3 min. 58 sec.</p>\n<p></p>\n",
+                                    "component_path": "text",
+                                    "id": "vy6yg7mp",
+                                    "style": {
+                                        "color": {
+                                            "value": "#555555",
+                                            "key": "--color-4"
+                                        },
+                                        "fontSize": "15px",
+                                        "lineHeight": "1.8",
+                                        "textAlign": "left"
+                                    }
+                                },
+                                {
+                                    "type": "image",
+                                    "name": "Image",
+                                    "_elType": "ELEMENT",
+                                    "component_path": "image",
+                                    "style": {
+                                        "objectFit": "cover",
+                                        "width": "492px"
+                                    },
+                                    "id": "i5hdffdd",
+                                    "attr": {
+                                        "src": "https://cdn.cmsfly.com/63e615721de085009c2053c0/airplan_2.0-ODyJUh.gif",
+                                        "alt": "Airplan"
+                                    }
+                                }
+                            ],
+                            "id": "2foa3t5i",
+                            "_elType": "COLUMN",
+                            "type": "column",
+                            "component_path": "column",
+                            "attr": {
+                                "__class__columnSize": "2/3"
+                            }
+                        },
+                        {
+                            "name": "Column",
+                            "style": {
+                                "padding": [
+                                    [
+                                        "top",
+                                        "15px"
+                                    ],
+                                    [
+                                        "bottom",
+                                        "15px"
+                                    ],
+                                    [
+                                        "left",
+                                        "15px"
+                                    ],
+                                    [
+                                        "right",
+                                        "15px"
+                                    ]
+                                ],
+                                "textAlign": "center",
+                                "justifyContent": "flex-start",
+                                "boxShadow": {
+                                    "type": "none",
+                                    "blur": "24px",
+                                    "spread": "3px",
+                                    "color": "rgba(0, 0, 0, 0.07)"
+                                },
+                                "borderRadius": "5px 5px 5px 5px",
+                                "border": [
+                                    [
+                                        "width",
+                                        ""
+                                    ],
+                                    [
+                                        "style",
+                                        "solid"
+                                    ],
+                                    [
+                                        "color",
+                                        "#F2F2F2"
+                                    ]
+                                ]
+                            },
+                            "content": [
+                                {
+                                    "name": "Title",
+                                    "titleType": "h2",
+                                    "type": "heading",
+                                    "_elType": "ELEMENT",
+                                    "component_path": "title",
+                                    "content": "<p>Accéder à la vidéo :</p>\n",
+                                    "settings": {
+                                        "dynamicText": {
+                                            "_enabled": false
+                                        }
+                                    },
+                                    "dynamicText": {
+                                        "items": [
+                                            {
+                                                "id": "hfgvo35u",
+                                                "content": "Lorem ipsum"
+                                            },
+                                            {
+                                                "id": "hfgvo35i",
+                                                "content": "dolor sit amet"
+                                            },
+                                            {
+                                                "id": "hfgvo35j",
+                                                "content": "consectetur adipiscing"
+                                            }
+                                        ],
+                                        "options": {
+                                            "typeSpeed": 50,
+                                            "loop": true,
+                                            "backSpeed": 40,
+                                            "showCursor": true,
+                                            "cursorChar": true
+                                        }
+                                    },
+                                    "id": "lwmzew4t"
+                                },
+                                {
+                                    "type": "iframe",
+                                    "name": "Iframe",
+                                    "_elType": "ELEMENT",
+                                    "component_path": "iframe",
+                                    "attr": {
+                                        "height": "440",
+                                        "width": "480",
+                                        "src": "https://tally.so/embed/mBEpl7?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+                                    },
+                                    "id": "1gtvyvq4"
+                                }
+                            ],
+                            "id": "64k2ni5p",
+                            "_elType": "COLUMN",
+                            "type": "column",
+                            "component_path": "column",
+                            "attr": {
+                                "__class__columnSize": "1/3"
+                            }
+                        }
+                    ],
+                    "id": "ioeb5234",
+                    "_elType": "ROW",
+                    "component_path": "row",
+                    "style": {
+                        "margin": [
+                            [
+                                "bottom",
+                                ""
+                            ],
+                            [
+                                "top",
+                                "30px"
+                            ]
+                        ],
+                        "border": [
+                            [
+                                "width",
+                                ""
+                            ],
+                            [
+                                "style",
+                                "solid"
+                            ],
+                            [
+                                "color",
+                                "#F2F2F2"
+                            ]
+                        ],
+                        "borderRadius": "5px 5px 5px 5px",
+                        "boxShadow": {
+                            "type": "",
+                            "blur": "24px",
+                            "spread": "3px",
+                            "color": "rgba(0, 0, 0, 0.07)"
+                        },
+                        "padding": [
+                            [
+                                "left",
+                                "20px"
+                            ],
+                            [
+                                "right",
+                                "20px"
+                            ]
+                        ]
+                    },
+                    "settings": {
+                        "popupPreview": false
+                    }
+                }
+            ],
+            "id": "61g7jil0",
+            "type": "section",
+            "_elType": "SECTION",
+            "component_path": "section",
+            "style": {
+                "margin": [
+                    [
+                        "bottom",
+                        "100px"
+                    ]
+                ]
+            }
+        },
+        {
+            "symbolId": "09935575-9afa-4da1-b788-537e780456a8",
+            "id": "uij2mg97"
+        }
+    ],
+    "attr": {
+        "src": "https://cdn.dorik.com/5e373b6c43a72a001f56dbf6/60561685efbe0f00119e3c45/images/product-2_h0yate5s.jpeg"
+    },
+    "settings": {
+        "meta": {
+            "title": "Airplan - Démo : découvrez la puissance d'Airplan",
+            "description": "Votre permis d'urbanisme en quelques secondes. Pré-remplissez vos Permis d'Urbanisme automatiquement dès aujourd'hui !",
+            "og:title": "Airplan - Démo : découvrez la puissance d'Airplan",
+            "og:description": "Airplan - Votre permis d'urbanisme en quelques secondes"
+        },
+        "popupPreview": false,
+        "general": {
+            "lang": "fr"
+        },
+        "additionalMeta": {
+            "noIndex": false,
+            "canonicalURL": "https://airplan.be/demo"
+        }
+    }
+}

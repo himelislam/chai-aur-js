@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <button id="hell">Hello</button>
+
+    <script>
+        function fetchAllEvents(page = 1, perPage = 10) {
+            const url = "https://api.cmsfly.com/api/v1/collections/66c33c5a421f9b0012162975/items?page=1&perPage=10";
+            const headers = {
+                "X-Dorik-Key": "da536c9e7a588069c3ed0a2386fe407e3f583d64703903ebb0eb5a14fc905c4b",
+                "content-type": "application/json"
+            };
+
+            console.log("Hello");
+
+            fetch(url, {
+                method: 'GET',
+                headers: headers,
+                mode: 'no-cors'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // Assuming the server responds with JSON
+                })
+                .then(data => {
+                    console.log(data);
+                    
+                })
+                .catch(error => console.error('Error fetching events:', error));
+        }
+
+        document.getElementById("hell").addEventListener("click", fetchAllEvents);
+
+        // fetchAllEvents();
+    </script>
+</body>
+
+</html>
