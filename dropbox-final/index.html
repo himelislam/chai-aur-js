@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-input-wrapper {
+            margin-bottom: 20px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-upload-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .file-upload-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .loading {
+            display: none;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .links {
+            margin-top: 20px;
+        }
+
+        .link-field {
+            margin-bottom: 10px;
+        }
+
+        .link-field label {
+            display: block;
+            font-weight: bold;
+        }
+
+        .link-field a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .link-field a:hover {
+            text-decoration: underline;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Upload File to Dropbox</h1>
+        <div class="file-input-wrapper">
+            <input type="file" id="fileInput" onchange="showFileName()">
+            <button class="file-upload-btn" onclick="document.getElementById('fileInput').click();">Choose File</button>
+            <div class="file-name" id="fileName">No file chosen</div>
+        </div>
+        <button class="file-upload-btn" onclick="uploadFile()">Upload File</button>
+        <div class="loading" id="loading">Uploading, please wait...</div>
+        <div class="links">
+            <div class="link-field" id="shareableLinkField">
+                <label for="shareableLink">Shareable Link:</label>
+                <a id="shareableLink" href="#" target="_blank">No link available</a>
+            </div>
+            <div class="link-field" id="downloadLinkField">
+                <label for="downloadLink">Download Link:</label>
+                <a id="downloadLink" href="#" target="_blank">No link available</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
+    <script>
+        const DROPBOX_APP_KEY = '6v4766eliatlmbu'; // Replace with your actual Dropbox App Key
+        const REDIRECT_URI = 'http://127.0.0.1:5500/dropbox-final/'; // Replace with your actual redirect URI
+
+        // Initialize Dropbox SDK
+        let dropbox;
+
+        // Function to handle authentication
+        function authenticate() {
+            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${DROPBOX_APP_KEY}&response_type=token&redirect_uri=${REDIRECT_URI}`;
+            window.location.href = authUrl;
+        }
+
+        // Function to extract the access token from URL hash after redirect
+        function getAccessTokenFromUrl() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            return params.get('access_token');
+        }
+
+        // Initialize Dropbox SDK with access token
+        function initializeDropbox() {
+            const accessToken = getAccessTokenFromUrl();
+            if (accessToken) {
+                dropbox = new Dropbox.Dropbox({ accessToken: accessToken });
+                console.log('Authenticated successfully');
+                // Optionally, you can remove the hash from the URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        // Function to handle file upload
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                console.log("File uploaded");
+            } else {
+                alert('Please choose a file to upload.');
+                return;
+            }
+
+            // Show loading indicator
+            document.getElementById('loading').style.display = 'block';
+
+            if (!dropbox) {
+                authenticate(); // Redirect for authentication if Dropbox SDK is not initialized
+                return;
+            }
+
+            // dropbox.filesUpload({ path: '/' + file.name, contents: file })
+            //     .then(response => {
+            //         console.log('File uploaded successfully:', response);
+            //         return dropbox.filesGetTemporaryLink({ path: response.result.path_display });
+            //     })
+            //     .then(linkResponse => {
+            //         document.getElementById('loading').style.display = 'none';
+            //         document.getElementById('shareableLink').href = linkResponse.result.link;
+            //         document.getElementById('shareableLink').innerText = linkResponse.result.link;
+            //         document.getElementById('downloadLink').href = linkResponse.result.link;
+            //         document.getElementById('downloadLink').innerText = linkResponse.result.link;
+            //     })
+            //     .catch(error => {
+            //         document.getElementById('loading').style.display = 'none';
+            //         console.error('Error:', error);
+            //     });
+
+            dropbox.filesUpload({ path: '/' + file.name, contents: file })
+                .then(response => {
+                    console.log('File uploaded successfully:', response);
+                    // Get a temporary link for the file
+                    return dropbox.filesGetTemporaryLink({ path: response.result.path_display });
+                })
+                .then(tempLinkResponse => {
+                    console.log('Temporary link:', tempLinkResponse.result.link);
+                    // Update the download link to use the temporary link
+                    document.getElementById('downloadLink').href = tempLinkResponse.result.link;
+                    document.getElementById('downloadLink').innerText = tempLinkResponse.result.link;
+
+                    // Now get a permanent shareable link
+                    return dropbox.sharingCreateSharedLinkWithSettings({ path: tempLinkResponse.result.metadata.path_display });
+                })
+                .then(shareLinkResponse => {
+                    console.log('Shareable link:', shareLinkResponse.result.url);
+                    document.getElementById('loading').style.display = 'none';
+
+                    // Update the shareable link to use the shareable link
+                    document.getElementById('shareableLink').href = shareLinkResponse.result.url;
+                    document.getElementById('shareableLink').innerText = shareLinkResponse.result.url;
+                })
+                .catch(error => {
+                    document.getElementById('loading').style.display = 'none';
+                    console.error('Error:', error);
+                });
+
+        }
+
+        function showFileName() {
+            const fileInput = document.getElementById('fileInput');
+            const fileName = fileInput.files[0] ? fileInput.files[0].name : 'No file chosen';
+            document.getElementById('fileName').innerText = fileName;
+        }
+
+        // Initialize Dropbox SDK when page loads
+        initializeDropbox();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<audio id="background-music" loop autoplay muted>
+    <source src="https://jimmears.com/mt-content/uploads/2022/06/01-track-01.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<button id="toggle-music">(Music)<i class="fas fa-microphone"></i></button>
+
+<style>
+audio {
+    display: none; /* This hides the audio element */
+}
+
+#toggle-music {
+    position: fixed;
+    bottom: 75px;
+    left: 8px;
+    z-index: 1000;
+    padding: 7px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    width: 60px;
+    height: 60px;
+}
+
+#toggle-music:hover {
+    background-color: #0056b3;
+}
+</style>
+<script>
+    // Songs list
+    const songs = [
+        'https://jimmears.com/mt-content/uploads/2022/06/02-track-02.mp3', 'https://jimmears.com/mt-content/uploads/2022/06/03-track-03.mp3', 'https://jimmears.com/mt-content/uploads/2022/06/04-track-04.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/05-track-05.mp3', 'https://jimmears.com/mt-content/uploads/2022/06/06-track-06.mp3', 'https://jimmears.com/mt-content/uploads/2022/06/06-track-07.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/08-track-08.mp3', 'https://jimmears.com/mt-content/uploads/2022/06/09-track-09.mp3', 'https://jimmears.com/mt-content/uploads/2022/06/10-track-10.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/11-track-11.mp3'
+    ];
+
+    // Keep track of the current song index
+    let currentSongIndex = 0;
+    const audioPlayer = document.getElementById('background-music')
+    const toggleButton = document.getElementById('toggle-music');
+    const icon = toggleButton.querySelector('i');
+
+    // Function to play the next song
+    function playNextSong() {
+        currentSongIndex = (currentSongIndex + 1) % songs.length; // Loop back to first song after the last one
+        audioPlayer.src = songs[currentSongIndex];
+        audioPlayer.play();
+    }
+
+    // Event listener for when a song ends
+    // audioPlayer.addEventListener('ended', playNextSong);
+
+    // Start the music when the page loads
+    window.addEventListener('load', () => {
+        audioPlayer.src = songs[currentSongIndex];
+        // audioPlayer.play();
+        setTimeout(() => {
+        // audioPlayer.muted = false;
+        audioPlayer.play().catch(error => {
+            console.warn('Autoplay restrictions prevented the audio from playing.');
+            setTimeout(() => {
+                audioPlayer.play().catch(error => {
+                    console.warn('Autoplay restrictions still apply. Waiting for user interaction.');
+                });
+            }, 3000);
+        });
+    }, 1000);
+    });
+
+    // Persist audio player state across pages
+    function setupPersistentPlayer() {
+        if (!sessionStorage.getItem('isPlaying')) {
+            sessionStorage.setItem('isPlaying', 'true');
+            sessionStorage.setItem('currentSongIndex', currentSongIndex);
+        } else {
+            // Restore the state
+            currentSongIndex = parseInt(sessionStorage.getItem('currentSongIndex'), 10);
+            audioPlayer.src = songs[currentSongIndex];
+            audioPlayer.play();
+        }
+    }
+
+    // Update session storage on song change
+    audioPlayer.addEventListener('ended', () => {
+        sessionStorage.setItem('currentSongIndex', currentSongIndex);
+    });
+
+
+    toggleButton.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                icon.className = 'fas fa-microphone';
+            } else {
+                audioPlayer.pause();
+                icon.className = 'fas fa-microphone-slash';
+            }
+        });
+    // Call the function to keep the player persistent
+    setupPersistentPlayer();
+
+</script>

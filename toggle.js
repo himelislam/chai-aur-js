@@ -271,3 +271,11 @@
 //   });
   
 // </script>
+
+<meta name="keywords" content="medical spa in scottsdale az, aesthetics near me, body sculpting appointments in scottsdale az, scottsdale bodysculpt appointments, salon and spa in scottsdale az, accufit lutronic, the sculpt pod, non-invasive radiofrequency skin tightening scottsdale, infrared body sculpting">
+<meta name=“keywords“ content=“medical spa in scottsdale az, aesthetics near me, body sculpting appointments in scottsdale az, scottsdale bodysculpt appointments, salon and spa in scottsdale az, accufit lutronic, the sculpt pod, non-invasive radiofrequency skin tightening scottsdale, infrared body sculpting“></meta>
+
+<meta name=“keywords“ content=“jet plasma, jet plasma near me, skin tightening near me, plasma facial near me, skin regeneration in scottsdale, acne treatment near me“></meta>
+
+<meta name="keywords" content="medical spa in scottsdale az, aesthetics near me, body sculpting appointments in scottsdale az, scottsdale bodysculpt appointments, salon and spa in scottsdale az, accufit lutronic, the sculpt pod, non-invasive radiofrequency skin tightening scottsdale, infrared body sculpting">
+<meta name="keywords" content="helllo-asdf asdlasdf jasdkfj asldkhf asdoifh "></meta>

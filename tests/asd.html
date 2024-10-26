@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Music Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        #toggle-music {
+            position: fixed;
+            bottom: 75px;
+            left: 8px;
+            z-index: 1000;
+            padding: 7px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 12px;
+            width: 60px;
+            height: 60px;
+        }
+
+        #toggle-music:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <button id="toggle-music">(Music) <i class="fas fa-microphone"></i></button>
+
+    <script>
+        // Songs list
+        const songs = [
+            'https://jimmears.com/mt-content/uploads/2022/06/01-track-01.mp3',
+            'https://jimmears.com/mt-content/uploads/2022/06/02-track-02.mp3',
+            'https://jimmears.com/mt-content/uploads/2022/06/03-track-03.mp3',
+            'https://jimmears.com/mt-content/uploads/2022/06/04-track-04.mp3',
+            'https://jimmears.com/mt-content/uploads/2022/06/05-track-05.mp3',
+            'https://jimmears.com/mt-content/uploads/2022/06/06-track-06.mp3',
+            'https://jimmears.com/mt-content/uploads/2022/06/08-track-08.mp3',
+            'https://jimmears.com/mt-content/uploads/2022/06/09-track-09.mp3',
+            'https://jimmears.com/mt-content/uploads/2022/06/10-track-10.mp3',
+            'https://jimmears.com/mt-content/uploads/2022/06/11-track-11.mp3'
+        ];
+
+        let currentSongIndex = 0;
+        let audioContext;
+        let audioBuffer;
+        let sourceNode;
+        let isPlaying = false;
+        const toggleButton = document.getElementById('toggle-music');
+        const icon = toggleButton.querySelector('i');
+
+        // Load audio file
+        async function loadAudio(url) {
+            const response = await fetch(url);
+            const arrayBuffer = await response.arrayBuffer();
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        }
+
+        // Play audio
+        function playAudio() {
+            sourceNode = audioContext.createBufferSource();
+            sourceNode.buffer = audioBuffer;
+            sourceNode.loop = true;
+            sourceNode.connect(audioContext.destination);
+            sourceNode.start(0);
+            isPlaying = true;
+            localStorage.setItem('isPlaying', 'true');
+            localStorage.setItem('currentSongIndex', currentSongIndex);
+        }
+
+        // Toggle play/pause
+        toggleButton.addEventListener('click', () => {
+            if (!isPlaying) {
+                if (!audioContext) {
+                    loadAudio(songs[currentSongIndex]).then(playAudio);
+                } else {
+                    playAudio();
+                }
+                icon.className = 'fas fa-microphone';
+            } else {
+                sourceNode.stop();
+                isPlaying = false;
+                localStorage.setItem('isPlaying', 'false');
+                icon.className = 'fas fa-microphone-slash';
+            }
+        });
+
+        // Setup persistent player state on load
+        window.addEventListener('load', async () => {
+            isPlaying = localStorage.getItem('isPlaying') === 'true';
+            currentSongIndex = parseInt(localStorage.getItem('currentSongIndex'), 10) || 0;
+
+            if (isPlaying) {
+                await loadAudio(songs[currentSongIndex]);
+                playAudio();
+                icon.className = 'fas fa-microphone';
+            }
+        });
+
+        // Listen for song end to play next
+        window.addEventListener('ended', () => {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            localStorage.setItem('currentSongIndex', currentSongIndex);
+            loadAudio(songs[currentSongIndex]).then(playAudio);
+        });
+    </script>
+</body>
+</html>
