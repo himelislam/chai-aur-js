@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Reviews</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Popins, sans-serif;
+            background-color: #202124;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rating-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-left: 16px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 2px;
+            color: #fbbc04;
+            font-size: 20px;
+        }
+
+        .star {
+            color: #fbbc04;
+            font-size: 20px;
+        }
+
+        .review-count {
+            color: #9aa0a6;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .leave-review {
+            background-color: #8ab4f8;
+            color: black;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel {
+            display: flex;
+            gap: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .review-card {
+            background-color: #303134;
+            padding: 24px;
+            border-radius: 8px;
+            flex: 0 0 calc(100% - 16px);
+            max-width: calc(100% - 16px);
+        }
+
+        .review-content {
+            margin: 16px 0;
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #4285f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 500;
+        }
+
+        .timestamp {
+            color: #9aa0a6;
+            font-size: 14px;
+        }
+
+        .read-more {
+            color: white;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .prev {
+            left: 0;
+        }
+
+        .next {
+            right: 0;
+        }
+
+        @media (min-width: 768px) {
+            .review-card {
+                flex: 0 0 calc(50% - 16px);
+                max-width: calc(50% - 16px);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .review-card {
+                flex: 0 0 calc(33.333% - 16px);
+                max-width: calc(33.333% - 16px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="brand">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-16%20at%203.17.59%E2%80%AFAM-IN8h6i05xcESJKlRHEKcvgIk7jKNz9.png"
+                    alt="Google" width="24" height="24">
+                <span>My Reviews</span>
+                <div class="rating-info">
+                    <span id="averageRating"></span>
+                    <div class="stars" id="starsContainer"></div>
+                    <span class="review-count" id="totalReviews"></span>
+                </div>
+            </div>
+            <a href="#" id="leaveAReviewURL" target="_blank">
+                <button class="leave-review">Leave a review</button>
+            </a>
+        </div>
+
+
+        <div class="carousel-container">
+            <div class="carousel" id="reviewCarousel"></div>
+            <button class="nav-button prev" onclick="navigate(-1)">‹</button>
+            <button class="nav-button next" onclick="navigate(1)">›</button>
+        </div>
+    </div>
+
+    <script>
+        const placeId = 'ChIJRQuKLcaj54gRgLJyrT5Xzo8';
+        const url = `https://google-reviews-backend.vercel.app/reviews?placeId=${placeId}`;
+
+        let currentIndex = 0;
+        let displayedReviews = [];
+
+        const fetchReviews = async () => {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json(); // Assuming the API returns { reviews: [...] }
+                console.log('Fetched Reviews:', data);
+                displayHeaderInfo(data);
+                displayedReviews = data.reviews || []; // Ensure it's an array
+                updateCarousel(); // Update carousel after fetching reviews
+            } catch (error) {
+                console.error('Error fetching reviews:', error.message);
+            }
+        };
+
+        const displayHeaderInfo = (data) => {
+            const averageRating = data.averageRating;
+            const totalReviews = data.totalReviews;
+            const leaveAReviewURL = data.leaveAReviewURL;
+
+            // Update the average rating
+            document.getElementById('averageRating').textContent = averageRating;
+
+            // Update the total reviews
+            document.getElementById('totalReviews').textContent = `${totalReviews} Reviews`;
+
+            // Update the leave a review link
+            document.getElementById('leaveAReviewURL').setAttribute('href', leaveAReviewURL);
+
+            // Update the star rating
+            const starsContainer = document.getElementById('starsContainer');
+            starsContainer.innerHTML = Array(Math.round(averageRating))
+                .fill('<span class="star">★</span>')
+                .join('');
+        };
+
+        function timeAgo(timestamp) {
+            const now = new Date();
+            const timeDifference = now.getTime() - timestamp * 1000; // Convert seconds to milliseconds
+
+            const seconds = Math.floor(timeDifference / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30);
+            const years = Math.floor(months / 12);
+
+            if (seconds < 60) return `${seconds} seconds ago`;
+            if (minutes < 60) return `${minutes} minutes ago`;
+            if (hours < 24) return `${hours} hours ago`;
+            if (days < 30) return `${days} days ago`;
+            if (months < 12) return `${months} months ago`;
+            return `${years} years ago`;
+        }
+
+        function createReviewCard(review) {
+            const truncateText = (text, wordLimit) => {
+                if (!text) return { truncated: 'No review text provided.', hasMore: false }; // Handle missing text
+                const words = text.split(' ');
+                if (words.length > wordLimit) {
+                    return {
+                        truncated: `${words.slice(0, wordLimit).join(' ')}...`,
+                        hasMore: true
+                    };
+                }
+                return { truncated: text, hasMore: false };
+            };
+
+            const { truncated, hasMore } = truncateText(review.text || '', 100);
+            const formattedTime = review.time ? timeAgo(review.time) : 'Unknown time';
+            return `
+                <div class="review-card">
+                    <div class="stars">
+                        ${'★'.repeat(review.rating || 0).padEnd(5, '☆')} 
+                    </div>
+                    <div class="review-content">
+                        ${truncated}
+                        ${hasMore && review.author_url ? `<a href="${review.author_url}" target="_blank" class="read-more">Read more</a>` : ''}
+                    </div>
+                    <div class="author">
+                        <img class="avatar" src="${review.profile_photo_url || 'A'}" />
+                        <div class="author-info">
+                            <span class="author-name">${review.author_name || 'Anonymous'}</span>
+                            <span class="timestamp">${formattedTime}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+
+
+        function updateCarousel() {
+            const carousel = document.getElementById('reviewCarousel');
+            const visibleSlides = getVisibleSlides();
+            const slideWidth = 100 / visibleSlides;
+
+            // Populate the carousel with review cards
+            carousel.innerHTML = displayedReviews
+                .map(review => createReviewCard(review))
+                .join('');
+
+            // Update transform for the current index
+            carousel.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+        }
+
+        function getVisibleSlides() {
+            if (window.innerWidth >= 1024) return 3;
+            if (window.innerWidth >= 768) return 2;
+            return 1;
+        }
+
+        function navigate(direction) {
+            const visibleSlides = getVisibleSlides();
+            currentIndex += direction;
+
+            // Prevent index out of bounds
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex > displayedReviews.length - visibleSlides) {
+                currentIndex = displayedReviews.length - visibleSlides;
+            }
+
+            updateCarousel();
+        }
+
+        // Handle window resizing
+        window.addEventListener('resize', updateCarousel);
+
+        // Initialize and fetch reviews
+        fetchReviews();
+
+        // setInterval(()=>{
+        //     navigate(1);
+        // }, 3000)
+    </script>
+
+</body>
+
+</html>
