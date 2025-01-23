@@ -1,0 +1,336 @@
+<div class="upload">
+    <style>
+        .upload {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #progressContainer {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        #progressText {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        #uploadSection,
+        #formSection {
+            display: block;
+        }
+
+        #submitFormBtn {
+            background-color: gray;
+            cursor: pointer;
+        }
+
+        .dropbox-connect-btn {
+            background-color: #047076;
+            /* background-color: #0061fe; */
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropbox-connect-btn:hover {
+            background-color: #004d51;
+        }
+
+        .dropbox-connect-btn:active {
+            background-color: #004d51;
+        }
+
+        .dropbox-logo {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            margin-bottom: -4px;
+        }
+
+        #uploadSection {
+            background-color: #fff;
+            padding: 20px 30px;
+            border: 4px solid #ff70b5;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 420px;
+        }
+
+        /* Heading */
+        #uploadSection h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* File input styling */
+        #fileInput {
+            width: 100%;
+            padding: 10px;
+            border: 4px solid #ff70b5;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        #fileInput:hover,
+        #fileInput:focus {
+            border-color: #000000;
+        }
+
+        /* Upload button */
+        #uploadBtn {
+            background-color: #047076;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        #uploadBtn:hover {
+            background-color: #004d51;
+        }
+
+        #uploadBtn:active {
+            background-color: #004d51;
+        }
+
+        #uploadBtn:disabled {
+            background-color: #cccccc;
+        }
+
+
+        /* Form section styling */
+        #formSection {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            border: 4px solid #ff70b5;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 420px;
+            text-align: left;
+        }
+
+        /* Heading styling */
+        #formSection h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Label styling */
+        #formSection label {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        /* Input and textarea styling */
+        #formSection input[type="text"],
+        #formSection input[type="email"],
+        #formSection textarea {
+            width: -webkit-fill-available;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 4px solid #ff70b5;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        #formSection input:focus,
+        #formSection textarea:focus {
+            border-color: #000000;
+        }
+
+        /* Textarea styling */
+        #formSection textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        /* Submit button styling */
+        #submitFormBtn {
+            background-color: #B7F7FF;
+            color: black;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: 3px solid #110FFF;
+            /* cursor: not-allowed; */
+            transition: background-color 0.3s ease;
+        }
+
+        #submitFormBtn.enabled {
+            cursor: pointer;
+            background-color: #B7F7FF;
+        }
+
+        #submitFormBtn:disabled {
+            background-color: #cccccc;
+        }
+
+        #submitFormBtn:hover:enabled {
+            background-color: #B7F7FF;
+        }
+
+        #submitFormBtn:active:enabled {
+            background-color: #B7F7FF;
+        }
+
+        #submitFormBtn.loading {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        #submitFormBtn:active:enabled {
+            background-color: #B7F7FF;
+        }
+
+        #category {
+            width: 100%;
+            /* Makes the select box full width */
+            padding: 10px;
+            /* Adds some padding for better usability */
+            border: 2px solid #ccc;
+            /* Sets a light gray border */
+            border-radius: 4px;
+            /* Adds slight rounded corners */
+            background-color: #f9f9f9;
+            /* Sets a light background */
+            font-size: 16px;
+            /* Adjusts the font size */
+            color: #333;
+            /* Text color */
+            outline: none;
+            /* Removes default outline on focus */
+            transition: border-color 0.3s ease;
+            /* Smooth border transition on focus */
+            border: 4px solid #ff70b5;
+        }
+
+        #category:focus {
+            border-color: #ff70b5;
+            /* Changes the border color to blue on focus */
+        }
+
+        #category.valid {
+            border-color: #ff70b5;
+        }
+
+        #category.invalid {
+            border-color: #dc3545;
+            /* Red border for invalid state */
+        }
+
+        #category option {
+            color: #333;
+            /* Color for the options */
+        }
+
+        .click-here{
+            color: red;
+        }
+    </style>
+    <div id="loginSection">
+        <button class="dropbox-connect-btn" onclick="loginWithDropbox()">
+            <img src="https://cdn0.iconfinder.com/data/icons/social-flat-rounded-rects/512/dropbox-512.png"
+                alt="Dropbox Logo" class="dropbox-logo">
+            Connect with Dropbox
+        </button>
+    </div>
+
+    <div id="uploadSection">
+        <h3 style="align-items: center; text-align: center;">Step 2</h3>
+        <h3 id="userName">Welcome</h3>
+        <h2>Please Upload File to Dropbox</h2>
+        <input type="file" id="fileInput" />
+        <button id="uploadBtn" onclick="uploadFile()">Upload</button>
+        <div id="progressContainer">
+            <span id="progressText"></span>
+        </div>
+    </div>
+
+    <div id="formSection">
+        <h3 style="align-items: center; text-align: center;">Step 1</h3>
+        <h3>Submit Form and Share Files</h3>
+        <label for="name">Faith Organization:</label>
+        <input type="text" id="name" required><br>
+        <label for="name1">Your Name:</label>
+        <input type="text" id="name1" required><br>
+        <label for="email">Your Email:</label>
+        <input type="email" id="email" required><br>
+        
+        <label for="category">Select Category:</label>
+        <select id="category" required>
+            <option value="">--Select Category--</option>
+            <option value="Care">Care</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Collaboration">Collaboration</option>
+            <option value="CommunityEvents">Community Events</option>
+            <option value="Counseling">Counseling</option>
+            <option value="Crafts">Crafts</option>
+            <option value="Education">Education</option>
+            <option value="Family">Family</option>
+            <option value="FarmersMarket">Farmers Market</option>
+            <option value="FoodDistribution">Food Distribution</option>
+            <option value="Gardening">Gardening</option>
+            <option value="Homeless">Homeless</option>
+            <option value="InterFaith">Inter-Faith</option>
+            <option value="Leadership">Leadership</option>
+            <option value="Music">Music</option>
+            <option value="PrayerAndHealing">Prayer and Healing</option>
+            <option value="PrisonMinistry">Prison Ministry</option>
+            <option value="QuiltingMinistry">Quilting</option>
+            <option value="Retreats">Retreats</option>
+            <option value="EducationMinistry">Education</option>
+            <option value="SewingMinistry">Sewing</option>
+            <option value="TransportationMinistries">Transportation</option>
+            <option value="YouthMinistries">Youth</option>
+            <option value="ElderlyMinistries">Elderly</option>
+            <option value="SocialJusticeMinistries">Social Justice Ministries</option>
+            <option value="EnvironmentalMinistries">Environmental Ministries</option>
+            <option value="DisasterReliefMinistries">Disaster Relief Ministries</option>
+            <option value="CounselingMinistries">Counseling Ministries</option>
+            <option value="InterFaithMinistries">Inter-Faith Ministries</option>
+            <option value="other">Other</option>
+        </select><br><br>
+
+        <div id="subCategorySection" style="display:none;">
+            <label>Select Subcategory:</label>
+            <div id="subcategories"></div>
+        </div>
+        <label for="description">Description of sharing:</label>
+        <textarea id="description" required></textarea><br>
+
+        <label for="">Please fill out the form to submit the files</label>
+        <p>To learn more about Dropbox please <a href="https://learn.dropbox.com/" class="click-here">Click Here</a></p>
+        <button id="submitFormBtn" onclick="submitForm()" disabled>SUBMIT</button>
+
+    </div>
+</div>
