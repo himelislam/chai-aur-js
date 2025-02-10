@@ -4,45 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="brand">
-                <img src="https://cdn.freebiesupply.com/images/large/2x/google-logo-transparent.png"
-                    alt="Google" width="120" height="40">
-                <span></span>
-                <div class="rating-info">
-                    <span id="averageRating"></span>
-                    <div class="stars" id="starsContainer"></div>
-                    <span class="review-count" id="totalReviews"></span>
-                </div>
-            </div>
-            <a href="#" id="leaveAReviewURL" target="_blank">
-                <button class="leave-review">Leave a review</button>
-            </a>
-        </div>
-
-
-        <div class="carousel-container">
-            <div class="carousel" id="reviewCarousel"></div>
-            <button class="nav-button prev" onclick="navigate(-1)">‹</button>
-            <button class="nav-button next" onclick="navigate(1)">›</button>
-        </div>
-    </div>
-<style>
-        /* * {
+    <style>
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: Popins, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #202124;
             color: white;
             padding: 20px;
-        } */
+        }
 
         .container {
             max-width: 1200px;
@@ -52,9 +26,11 @@
 
         .header {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
+            gap: 16px;
         }
 
         .brand {
@@ -66,8 +42,8 @@
         .rating-info {
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-left: 16px;
+            gap: 8px;
+            margin-left: 0;
         }
 
         .stars {
@@ -84,7 +60,7 @@
 
         .review-count {
             color: #9aa0a6;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 400;
             line-height: 1.5;
         }
@@ -97,6 +73,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: 500;
+            width: 100%;
         }
 
         .carousel-container {
@@ -121,6 +98,21 @@
         .review-content {
             margin: 16px 0;
             color: rgb(222, 219, 219);
+            overflow: hidden;
+            line-height: 1.5;
+        }
+
+        .review-content.expanded {
+            overflow: visible;
+            white-space: normal;
+        }
+
+        .read-more {
+            color: #8ab4f8;
+            cursor: pointer;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 8px;
         }
 
         .author {
@@ -130,7 +122,7 @@
             color: rgb(211, 209, 209);
         }
 
-        #averageRating{
+        #averageRating {
             color: rgb(222, 219, 219);
         }
 
@@ -157,10 +149,6 @@
         .timestamp {
             color: #9aa0a6;
             font-size: 14px;
-        }
-
-        .read-more {
-            color: white;
         }
 
         .nav-button {
@@ -201,8 +189,77 @@
                 max-width: calc(33.333% - 16px);
             }
         }
+
+        /* Media Queries */
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .brand {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .rating-info {
+                margin-left: 0;
+            }
+
+            .leave-review {
+                width: 100%;
+            }
+
+            .review-card {
+                padding: 16px;
+            }
+
+            .review-content {
+                font-size: 14px;
+            }
+
+            .author-name {
+                font-size: 14px;
+            }
+
+            .timestamp {
+                font-size: 12px;
+            }
+
+            .nav-button {
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
+            }
+        }
     </style>
-    
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="brand">
+                <img src="https://cdn.freebiesupply.com/images/large/2x/google-logo-transparent.png"
+                    alt="Google" width="120" height="40">
+                <div class="rating-info">
+                    <span id="averageRating"></span>
+                    <div class="stars" id="starsContainer"></div>
+                    <span class="review-count" id="totalReviews"></span>
+                </div>
+            </div>
+            <a href="#" id="leaveAReviewURL" target="_blank">
+                <button class="leave-review">Leave a review</button>
+            </a>
+        </div>
+
+        <div class="carousel-container">
+            <div class="carousel" id="reviewCarousel"></div>
+            <button class="nav-button prev" onclick="navigate(-1)">‹</button>
+            <button class="nav-button next" onclick="navigate(1)">›</button>
+        </div>
+    </div>
+
     <script>
         const placeId = 'ChIJRQuKLcaj54gRgLJyrT5Xzo8';
         const url = `https://google-reviews-backend.vercel.app/reviews?placeId=${placeId}`;
@@ -217,11 +274,11 @@
                     throw new Error(`Error: ${response.status} ${response.statusText}`);
                 }
 
-                const data = await response.json(); // Assuming the API returns { reviews: [...] }
+                const data = await response.json();
                 console.log('Fetched Reviews:', data);
                 displayHeaderInfo(data);
-                displayedReviews = data.reviews || []; // Ensure it's an array
-                updateCarousel(); // Update carousel after fetching reviews
+                displayedReviews = data.reviews || [];
+                updateCarousel();
             } catch (error) {
                 console.error('Error fetching reviews:', error.message);
             }
@@ -232,16 +289,10 @@
             const totalReviews = data.totalReviews;
             const leaveAReviewURL = data.leaveAReviewURL;
 
-            // Update the average rating
             document.getElementById('averageRating').textContent = averageRating;
-
-            // Update the total reviews
             document.getElementById('totalReviews').textContent = `${totalReviews} Reviews`;
-
-            // Update the leave a review link
             document.getElementById('leaveAReviewURL').setAttribute('href', leaveAReviewURL);
 
-            // Update the star rating
             const starsContainer = document.getElementById('starsContainer');
             starsContainer.innerHTML = Array(Math.round(averageRating))
                 .fill('<span class="star">★</span>')
@@ -250,7 +301,7 @@
 
         function timeAgo(timestamp) {
             const now = new Date();
-            const timeDifference = now.getTime() - timestamp * 1000; // Convert seconds to milliseconds
+            const timeDifference = now.getTime() - timestamp * 1000;
 
             const seconds = Math.floor(timeDifference / 1000);
             const minutes = Math.floor(seconds / 60);
@@ -268,19 +319,16 @@
         }
 
         function createReviewCard(review) {
-            const truncateText = (text, wordLimit) => {
-                if (!text) return { truncated: 'No review text provided.', hasMore: false }; // Handle missing text
-                const words = text.split(' ');
-                if (words.length > wordLimit) {
-                    return {
-                        truncated: `${words.slice(0, wordLimit).join(' ')}...`,
-                        hasMore: true
-                    };
-                }
-                return { truncated: text, hasMore: false };
+            const truncateText = (text, limit = 200) => {
+                if (!text) return { truncated: 'No review text provided.', hasMore: false };
+                if (text.length <= limit) return { truncated: text, hasMore: false };
+                return {
+                    truncated: `${text.slice(0, limit)}...`,
+                    hasMore: true
+                };
             };
 
-            const { truncated, hasMore } = truncateText(review.text || '', 100);
+            const { truncated, hasMore } = truncateText(review.text || '');
             const formattedTime = review.time ? timeAgo(review.time) : 'Unknown time';
             return `
                 <div class="review-card">
@@ -289,7 +337,7 @@
                     </div>
                     <div class="review-content">
                         ${truncated}
-                        ${hasMore && review.author_url ? `<a href="${review.author_url}" target="_blank" class="read-more">Read more</a>` : ''}
+                        ${hasMore ? `<span class="read-more" onclick="expandReview(this)">Read more</span>` : ''}
                     </div>
                     <div class="author">
                         <img class="avatar" src="${review.profile_photo_url || 'A'}" />
@@ -302,19 +350,21 @@
             `;
         }
 
-
+        function expandReview(element) {
+            const reviewContent = element.parentElement;
+            reviewContent.classList.toggle('expanded');
+            element.textContent = reviewContent.classList.contains('expanded') ? 'Read less' : 'Read more';
+        }
 
         function updateCarousel() {
             const carousel = document.getElementById('reviewCarousel');
             const visibleSlides = getVisibleSlides();
             const slideWidth = 100 / visibleSlides;
 
-            // Populate the carousel with review cards
             carousel.innerHTML = displayedReviews
                 .map(review => createReviewCard(review))
                 .join('');
 
-            // Update transform for the current index
             carousel.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
         }
 
@@ -328,7 +378,6 @@
             const visibleSlides = getVisibleSlides();
             currentIndex += direction;
 
-            // Prevent index out of bounds
             if (currentIndex < 0) currentIndex = 0;
             if (currentIndex > displayedReviews.length - visibleSlides) {
                 currentIndex = displayedReviews.length - visibleSlides;
@@ -337,15 +386,12 @@
             updateCarousel();
         }
 
-        // Handle window resizing
         window.addEventListener('resize', updateCarousel);
-
-        // Initialize and fetch reviews
         fetchReviews();
 
-        setInterval(()=>{
+        setInterval(() => {
             navigate(1);
-        }, 8000)
+        }, 8000);
     </script>
 </body>
 </html>
