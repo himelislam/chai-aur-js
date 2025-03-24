@@ -1,0 +1,869 @@
+<script>
+
+    let accessToken = null;
+    let downloadLink = null;
+    let shareLink = null;
+    let userName = '';
+
+    const formData = {
+        name,
+        name1,
+        email,
+        description,
+        downloadLink,
+        shareLink,
+        category,
+        // subCategory
+    }
+
+
+
+    // Redirect to Dropbox login
+    function loginWithDropbox() {
+        window.location.href = "https://ministry-vineyard-backend-gamma.vercel.app/auth/dropbox";
+    }
+
+    function extractAccessTokenFromUrl() {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const accessToken = params.get("access_token");
+
+        // Clear the hash from the URL
+        if (accessToken) {
+            // Store the access token in local storage
+            localStorage.setItem('accessToken', accessToken);
+            window.location.hash = "";
+
+            // Verify if the access token is valid by making an API call to Dropbox
+            validateAccessToken(accessToken)
+                .then(isValid => {
+                    if (isValid) {
+                        // If the token is valid, show the upload section
+                        document.getElementById('loginSection').style.display = 'none';
+                        document.getElementById('formSection').style.display = 'block';
+                        window.location.hash = "";
+                    } else {
+                        // If the token is invalid, clear the access token and show the login section
+                        localStorage.removeItem('accessToken');
+                        alert('Invalid or expired access token. Please log in again.');
+                        document.getElementById('loginSection').style.display = 'block';
+                        document.getElementById('uploadSection').style.display = 'none';
+                        window.location.hash = "";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error validating access token:', error);
+                    alert('Error validating access token. Please try again.');
+                });
+        }
+    }
+
+    async function validateAccessToken(accessToken) {
+        try {
+            const response = await fetch('https://api.dropboxapi.com/2/users/get_current_account', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(null)
+            });
+
+            // If the response status is 200, the access token is valid
+            if (response.status === 200) {
+                const userDetails = await response.json()
+                document.getElementById('userName').textContent = `Welcome ${userDetails?.name?.display_name}`;
+                // console.log(userDetails.name.display_name, "users details");
+                return true;
+
+            } else {
+                // Token is invalid or expired
+                return false;
+            }
+        } catch (error) {
+            console.error('Error while checking access token:', error);
+            return false;
+        }
+    }
+
+
+    function checkForAccessToken() {
+        // Check local storage for access token
+        accessToken = localStorage.getItem('accessToken');
+
+        if (!accessToken) {
+            // Extract from URL if not in local storage
+            extractAccessTokenFromUrl();
+            if (!accessToken) {
+                // Retry every 500 milliseconds to detect if the token appears
+                setTimeout(checkForAccessToken, 500);
+            }
+        } else {
+            // Show upload section if the user is logged in
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('formSection').style.display = 'block';
+        }
+    }
+
+    async function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        if (!file) {
+            alert("Please select a file to upload.");
+            return;
+        }
+        // Check if file size exceeds 2GB
+        const maxSizeInBytes = 2 * 1024 * 1024 * 1024; // 2GB in bytes
+        if (file.size > maxSizeInBytes) {
+            alert("The selected file is larger than 2GB. Please choose a smaller file.");
+            return;
+        }
+
+        console.log(userName);
+
+        // Show loading state
+        document.getElementById('uploadBtn').innerText = 'Uploading...';
+        document.getElementById('uploadBtn').disabled = true;
+        document.getElementById('progressText').innerText = '0%';
+
+        try {
+            // Step 1: Get Dropbox upload link from the backend
+            let uploadLinkData;
+            try {
+                const uploadLinkResponse = await fetch('https://ministry-vineyard-backend-gamma.vercel.app/get-upload-link', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        accessToken,
+                        fileName: file.name,
+                        fileSize: file.size
+                    }),
+                });
+
+                uploadLinkData = await uploadLinkResponse.json();
+
+                if (!uploadLinkResponse.ok || !uploadLinkData.uploadLink) {
+                    throw new Error('Failed to get upload link.');
+                }
+            } catch (error) {
+                console.error("Error getting upload link:", error);
+                alert("Failed to get upload link. Please try again.");
+
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('uploadSection').style.display = 'none';
+                localStorage.removeItem("accessToken");
+
+                document.getElementById('uploadBtn').innerText = 'Upload';
+                document.getElementById('uploadBtn').disabled = false;
+                document.getElementById('progressText').innerText = '0%';
+                return;
+            }
+
+            const uploadLink = uploadLinkData.uploadLink;
+
+            // Step 2: Upload the file using the upload link in chunks
+            const chunkSize = 30 * 1024 * 1024; // 4 MB per chunk
+            const totalChunks = Math.ceil(file.size / chunkSize);
+            let uploadedChunks = 0;
+
+            const reader = new FileReader();
+
+
+            reader.onload = async function (event) {
+                const fileChunk = event.target.result;
+
+                try {
+                    const chunkResponse = await fetch(uploadLink, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + uploadLinkData.accessToken,
+                            'Dropbox-API-Arg': JSON.stringify({
+                                cursor: {
+                                    session_id: uploadLinkData.sessionId,
+                                    offset: uploadedChunks * chunkSize
+                                },
+                                close: uploadedChunks === totalChunks - 1 // Close session if it's the last chunk
+                            }),
+                            'Content-Type': 'application/octet-stream',
+                        },
+                        body: fileChunk,
+                    });
+
+                    if (!chunkResponse.ok) {
+                        throw new Error('Error uploading chunk.');
+                    }
+
+                    uploadedChunks++;
+                    const progress = (uploadedChunks / totalChunks) * 100;
+                    document.getElementById('progressText').innerText = `${Math.round(progress)}%`;
+
+                    if (uploadedChunks < totalChunks) {
+                        uploadNextChunk();
+                    } else {
+                        // Finish the upload session using backend
+                        try {
+                            const finishBatchResponse = await fetch('https://ministry-vineyard-backend-gamma.vercel.app/finish-upload-batch', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    accessToken: uploadLinkData.accessToken,
+                                    // cursorList: [{ session_id: uploadLinkData.sessionId, offset: totalChunks * chunkSize }],
+                                    cursorList: [{ session_id: uploadLinkData.sessionId, offset: file.size }],
+                                    commitList: [{ path: uploadLinkData.filePathFinal, mode: 'overwrite', autorename: true }]
+                                }),
+                            });
+
+                            const finishData = await finishBatchResponse.json();
+                            if (!finishBatchResponse.ok) {
+                                throw new Error('Failed to finish batch upload.');
+                            }
+
+                            // After finishing, get the shareable link
+                            let shareData;
+                            try {
+                                const shareResponse = await fetch('https://ministry-vineyard-backend-gamma.vercel.app/get-shareable-link', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        accessToken: uploadLinkData.accessToken,
+                                        // path: uploadLinkData.filePathFinal
+                                        path: finishData.entries[0].path_display
+                                    }),
+                                });
+
+                                shareData = await shareResponse.json();
+
+                                if (!shareResponse.ok || !shareData.shareLink) {
+                                    throw new Error('Failed to generate shareable link.');
+                                }
+
+                                if (!shareData.shareLink || !shareData.downloadLink) {
+                                    throw new Error('Shareable link or download link not found in response.');
+                                }
+
+                                shareLink = shareData.shareLink;
+                                downloadLink = shareData.downloadLink;
+
+                                try {
+                                    const response = await fetch('https://ministry-vineyard-backend-gamma.vercel.app/submit-form', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        // body: JSON.stringify({ name, name1, email, description, downloadLink, shareLink, category, subCategory }),
+                                        body: JSON.stringify({
+                                            name: formData.name,
+                                            name1: formData.name1,
+                                            email: formData.email,
+                                            description: formData.description,
+                                            downloadLink: downloadLink,
+                                            shareLink: shareLink,
+                                            category: formData.category,
+                                            subCategory: formData.subCategory
+                                        }),
+
+                                    });
+
+                                    if (response.ok) {
+                                        alert('Step 3:  Congratulations!! Files Uploaded successfully!');
+                                        document.getElementById('uploadBtn').innerText = 'Uploaded';
+                                        document.getElementById('uploadBtn').disabled = true;
+                                        // submitBtn.innerHTML = 'Submitted!';
+                                        // submitBtn.disabled = true;
+                                    } else {
+                                        alert('Error uploading files. Please try again.');
+                                        // resetSubmitBtn();
+                                    }
+                                } catch (error) {
+                                    alert('An error occurred submitting form. Please try again.');
+                                    // resetSubmitBtn();
+                                    document.getElementById('uploadBtn').innerText = 'Upload';
+                                    document.getElementById('uploadBtn').disabled = false;
+                                    document.getElementById('progressText').innerText = '0%';
+                                }
+                            } catch (error) {
+                                console.error("Error getting shareable link:", error);
+                                alert("Failed to generate shareable link. Please try again.");
+                                document.getElementById('uploadBtn').innerText = 'Upload';
+                                document.getElementById('uploadBtn').disabled = false;
+                                document.getElementById('progressText').innerText = '0%';
+                                return;
+                            }
+
+                            // Enable form submission
+                            // document.getElementById('uploadSection').style.display = 'none';
+                            // document.getElementById('formSection').style.display = 'block';
+                            // document.getElementById('uploadBtn').innerText = 'Upload Complete';
+                        } catch (error) {
+                            console.error("Error finishing upload batch:", error);
+                            alert("An error occurred while finishing the upload session. Please try again.");
+                            document.getElementById('uploadBtn').innerText = 'Upload';
+                            document.getElementById('uploadBtn').disabled = false;
+                            document.getElementById('progressText').innerText = '0%';
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error during chunk upload:", error);
+                    alert("An error occurred while uploading the chunk. Please try again.");
+                    document.getElementById('uploadBtn').innerText = 'Upload';
+                    document.getElementById('uploadBtn').disabled = false;
+                    document.getElementById('progressText').innerText = '0%';
+                }
+            };
+
+
+
+
+            function uploadNextChunk() {
+                const start = uploadedChunks * chunkSize;
+                const end = Math.min(start + chunkSize, file.size);
+                reader.readAsArrayBuffer(file.slice(start, end));
+            }
+
+            uploadNextChunk();
+        } catch (error) {
+            console.error("Error during file upload:", error);
+            alert("An error occurred while uploading the file. Please try again.");
+            document.getElementById('uploadBtn').innerText = 'Upload';
+            document.getElementById('uploadBtn').disabled = false;
+            document.getElementById('progressText').innerText = '0%';
+        }
+    }
+
+
+
+    function arrayBufferToBase64(buffer) {
+        let binary = '';
+        let bytes = new Uint8Array(buffer);
+        let len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+    }
+
+    function handleSuccessfulUpload(data) {
+        const { downloadLink, shareLink } = data;
+        if (downloadLink && shareLink) {
+            // Enable the form submission after successful upload
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('formSection').style.display = 'block';
+        }
+    }
+
+
+    const categoriesWithSubcategories = {
+        Care: [
+            'Elder Care Services',
+            'Mental Health Support',
+            'Child Care Assistance',
+            'Grief Support Groups',
+            'Crisis Intervention Services',
+            'Other'
+        ],
+        Clothing: [
+            'Clothing Drives',
+            'Clothing Swap Events',
+            'Seasonal Clothing Distribution',
+            'Thrift Store Operations',
+            'Clothing Literacy Programs',
+            'Other'
+        ],
+        Collaboration: [
+            'Partnerships with Local Organizations',
+            'Joint Events with Community Leaders',
+            'Inter-Church Collaborations',
+            'Group Volunteer Projects',
+            'Fundraising Collaborations',
+            'Other'
+        ],
+        CommunityEvents: [
+            'Annual Festivals',
+            'Holiday Celebrations',
+            'Outdoor Movie Nights',
+            'Workshops and Seminars',
+            'Volunteer Appreciation Events',
+            'Other'
+        ],
+        Counseling: [
+            'Financial Counseling Workshops',
+            'Marriage and Relationship Counseling',
+            'Parent Coaching Sessions',
+            'Crisis Counseling Services',
+            'Substance Abuse Support Groups',
+            'Other'
+        ],
+        Crafts: [
+            'Craft Workshops',
+            'Community Craft Fairs',
+            'Quilting Circles',
+            'DIY Project Events',
+            'Art Therapy Sessions',
+            'Other'
+        ],
+        Education: [
+            'Adult Education Programs',
+            'After-School Tutoring Services',
+            'Literary and Writing Workshops',
+            'Educational Field Trips',
+            'Parenting and Life Skills Classes',
+            'Other'
+        ],
+        Family: [
+            'Family Support Services',
+            'Family Recreation Days',
+            'Parenting Classes',
+            'Youth and Family Retreats',
+            'Family Counseling Services',
+            'Other'
+        ],
+        FarmersMarket: [
+            'Weekly Farmers Market Operations',
+            'Community Supported Agriculture (CSA) Programs',
+            'Cooking Demonstrations and Classes',
+            'Educational Booths on Nutrition',
+            'Partnerships with Local Farmers',
+            'Other'
+        ],
+        FoodDistribution: [
+            'Regular Food Distribution Events',
+            'Mobile Food Pantries',
+            'Community Farm-to-Table Initiatives',
+            'Nutritional Education Workshops',
+            'Special Holiday Food Drives',
+            'Other'
+        ],
+        Gardening: [
+            'Community Gardening Projects',
+            'Gardening Workshops for All Ages',
+            'School Gardening Programs',
+            'Sustainable Gardening Practices',
+            'Herbal and Vegetable Gardening Classes',
+            'Other'
+        ],
+        Homeless: [
+            'Emergency Shelter Services',
+            'Homeless Outreach Programs',
+            'Transitional Housing Initiatives',
+            'Employment Support for the Homeless',
+            'Food and Clothing Distribution Programs',
+            'Other'
+        ],
+        InterFaith: [
+            'Inter-Faith Dialogue Events',
+            'Community Service Projects with Diverse Faith Groups',
+            'Educational Workshops on Different Religions',
+            'Joint Worship and Prayer Services',
+            'Cultural Arts Festivals Celebrating Diversity',
+            'Other'
+        ],
+        Leadership: [
+            'Leadership Training Programs',
+            'Mentorship Initiatives for Young Leaders',
+            'Development Workshops for Community Leaders',
+            'Community Leadership Councils',
+            'Conflict Resolution Training',
+            'Other'
+        ],
+        Music: [
+            'Community Choirs',
+            'Music Therapy Sessions',
+            'Concerts for Charity Events',
+            'Music Classes for Youth',
+            'Worship Music Workshops',
+            'Other'
+        ],
+        PrayerAndHealing: [
+            'Healing Services and Prayer Nights',
+            'Prayer Groups and Chains',
+            'Spiritual Counseling Sessions',
+            'Workshops on Prayer Practices',
+            'Community Prayer Events',
+            'Other'
+        ],
+        PrisonMinistry: [
+            'Prison Fellowship Programs',
+            'Visitation Programs',
+            'Reentry Support Initiatives',
+            'Support for Families of Inmates',
+            'Advocacy and Awareness Programs',
+            'Other'
+        ],
+        QuiltingMinistry: [
+            'Quilt Making Workshops',
+            'Quilt Donation Drives',
+            'Community Stitch-In Days',
+            'Quilts of Valor',
+            'Craft Fairs and Fundraisers',
+            'Other'
+        ],
+        Retreats: [
+            'Spiritual Retreats',
+            'Family Retreats',
+            'Youth Retreats',
+            'Leadership Development Retreats',
+            'Counseling Retreats',
+            'Other'
+        ],
+        EducationMinistry: [
+            'Sunday School',
+            'Bible Study Groups',
+            'Adult Education Classes',
+            'Seminars and Workshops',
+            'Educational Resources for Parents',
+            'Other'
+        ],
+        SewingMinistry: [
+            'Sewing Workshops',
+            'Community Quilting Projects',
+            'Clothing Creation',
+            'Repair and Alteration Services',
+            'Fabric Drives',
+            'Other'
+        ],
+        TransportationMinistries: [
+            'Volunteer Driver Programs',
+            'Shuttle Services for Events',
+            'Ride Sharing Initiatives',
+            'Emergency Transportation Services',
+            'Transportation for Youth Programs',
+            'Other'
+        ],
+        YouthMinistries: [
+            'Youth Groups',
+            'Leadership Development for Youth',
+            'Service Projects for Youth',
+            'Social Events',
+            'Mentorship Programs',
+            'Other'
+        ],
+        ElderlyMinistries: [
+            'Senior Care and Support Groups',
+            'Visiting Ministries',
+            'Educational Workshops for Seniors',
+            'Transportation Assistance for Seniors',
+            'Health and Wellness Programs',
+            'Other'
+        ],
+        SocialJusticeMinistries: [
+            'Advocacy Programs',
+            'Public Awareness Campaigns',
+            'Partnerships with Local Organizations',
+            'Forums and Discussions',
+            'Voter Registration Drives',
+            'Other'
+        ],
+        EnvironmentalMinistries: [
+            'Community Clean-Up Events',
+            'Recycling and Waste Reduction Programs',
+            'Sustainable Agriculture Support',
+            'Environmental Education Workshops',
+            'Conservation Initiatives',
+            'Other'
+        ],
+        DisasterReliefMinistries: [
+            'Emergency Response Planning',
+            'Disaster Relief Training',
+            'Resource Management',
+            'Community Awareness and Preparedness Events',
+            'Post-Disaster Recovery Support',
+            'Other'
+        ],
+        CounselingMinistries: [
+            'One-on-One Counseling Services',
+            'Group Counseling Sessions',
+            'Family Counseling Services',
+            'Workshops on Mental Health Awareness',
+            'Crisis Intervention Training',
+            'Other'
+        ],
+        InterFaithMinistries: [
+            'Inter-Faith Dialogue Events',
+            'Community Service Projects with Diverse Faith Groups',
+            'Cultural Celebrations',
+            'Joint Prayer Services',
+            'Resource Sharing and Mutual Support',
+            'Other'
+        ]
+    };
+
+
+    document.getElementById('category').addEventListener('change', function () {
+        const selectedCategory = this.value;
+        console.log('Helllllllllll', selectedCategory);
+        const subCategorySection = document.getElementById('subCategorySection');
+        const subCategoryContainer = document.getElementById('subcategories');
+
+        if (selectedCategory) {
+            subCategoryContainer.innerHTML = '';
+            categoriesWithSubcategories[selectedCategory].forEach(subcategory => {
+                subCategoryContainer.innerHTML += `
+            <label>
+                <input type="radio" name="subcategory" value="${subcategory}" required> ${subcategory}
+            </label>`;
+            });
+            subCategorySection.style.display = 'block';
+            // document.getElementById('submitFormBtn').disabled = false;
+        } else {
+            subCategorySection.style.display = 'none';
+            document.getElementById('submitFormBtn').disabled = true;
+        }
+    });
+
+    // const formData = {
+    //     name,
+    //     name1,
+    //     email,
+    //     description,
+    //     downloadLink,
+    //     shareLink,
+    //     category,
+    //     // subCategory
+    // }
+
+
+    // Submit form data to Airtable
+    async function submitForm() {
+        // const submitBtn = document.getElementById('submitFormBtn');
+        // submitBtn.disabled = true;
+        // submitBtn.classList.add('loading');
+        // submitBtn.innerHTML = 'Submitting...';
+
+        formData.name = document.getElementById('name').value;
+        formData.name1 = document.getElementById('name1').value;
+        formData.email = document.getElementById('email').value;
+        formData.description = document.getElementById('description').value;
+        const categorySelect = document.getElementById('category');
+        formData.category = categorySelect.options[categorySelect.selectedIndex].text;
+        formData.subCategory = document.querySelector('input[name="subcategory"]:checked')?.value;
+
+        // try {
+        //     const response = await fetch('https://ministry-vineyard-backend-gamma.vercel.app/submit-form', {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify({ name, name1, email, description, downloadLink, shareLink, category, subCategory }),
+        //     });
+
+        //     if (response.ok) {
+        //         alert('Form submitted successfully!');
+        //         submitBtn.innerHTML = 'Submitted!';
+        //         submitBtn.disabled = true;
+        //     } else {
+        //         alert('Error submitting form. Please try again.');
+        //         resetSubmitBtn();
+        //     }
+        // } catch (error) {
+        //     alert('An error occurred. Please try again.');
+        //     resetSubmitBtn();
+        // }
+
+        console.log("form Data", formData);
+
+        if (!formData.name || !formData.name1 || !formData.email || !formData.description || !formData.category) {
+            alert('Please fill out all required fields.');
+            // resetSubmitBtn();
+            return; // Stop submission if validation fails
+        } else {
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('uploadSection').style.display = 'block';
+        }
+    }
+
+    function resetSubmitBtn() {
+        const submitBtn = document.getElementById('submitFormBtn');
+        submitBtn.innerHTML = 'Submit';
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+    }
+
+    // Extract access token on page load
+    // window.onload = extractAccessTokenFromUrl;
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log("checking bhai")
+        // Start the continuous check after a short delay to allow initial page load
+        setTimeout(checkForAccessToken, 1000); // Adjust the delay time if necessary
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        setInterval(() => {
+            const fields = ['name', 'name1', 'category', 'email', 'description'];
+            console.log("also asi bhai");
+
+            function checkFormValidity() {
+                let isValid = true;
+                fields.forEach(field => {
+                    const input = document.getElementById(field);
+                    if (input && !input.value.trim()) {
+                        input.classList.add('error');
+                        input.classList.remove('valid');
+                        isValid = false;
+                    } else if (input) {
+                        input.classList.remove('error');
+                        input.classList.add('valid');
+                    }
+                });
+                document.getElementById('submitFormBtn').disabled = !isValid;
+                document.getElementById('submitFormBtn').classList.remove('loading');
+            }
+
+            fields.forEach(field => {
+                const input = document.getElementById(field);
+                if (input) {
+                    input.addEventListener('input', checkFormValidity);
+                } else {
+                    console.error(`Element with id '${field}' not found.`);
+                }
+            });
+            
+            const token = localStorage.getItem("accessToken");
+        if(token){
+            document.querySelector('[data-button="hello"]').style.display = "block";
+            document.querySelector('[data-button="hllo"]').style.display = "none";
+            document.querySelector('.download').style.display = 'block';
+        }else{
+            document.querySelector('[data-button="hello"]').style.display = "none";
+            document.querySelector('[data-button="hllo"]').style.display = "block";
+            document.querySelector('.download').style.display = 'none';
+        }
+        }, 1000);
+
+        document.querySelector('[data-button="hello"]').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default link behavior
+        loginWithDropbox();
+        console.log("clicked");
+    });
+    });
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    audio {
+        display: none;
+        /* This hides the audio element */
+    }
+
+    #toggle-music {
+        position: fixed;
+        bottom: 75px;
+        left: 8px;
+        z-index: 1000;
+        padding: 5px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        font-size: 10px;
+        width: 70px;
+        height: 70px;
+    }
+
+    #toggle-music:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+ <audio id="background-music" >
+    <source id="audio-source" src="" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<button id="toggle-music">(Inspirational Music) <i class="fas fa-microphone"></i></button>
+
+<script>
+    // Songs list
+    const songs = [
+        'https://jimmears.com/mt-content/uploads/2022/06/01-track-01.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/02-track-02.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/03-track-03.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/04-track-04.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/05-track-05.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/06-track-06.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/08-track-08.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/09-track-09.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/10-track-10.mp3',
+        'https://jimmears.com/mt-content/uploads/2022/06/11-track-11.mp3'
+    ];
+
+    let currentSongIndex = 0;
+    const audioPlayer = document.getElementById('background-music');
+    const toggleButton = document.getElementById('toggle-music');
+    const icon = toggleButton.querySelector('i');
+
+    function playNextSong() {
+        currentSongIndex = (currentSongIndex + 1) % songs.length; // Loop back to the first song
+        audioPlayer.src = songs[currentSongIndex];
+        audioPlayer.load(); // Ensure the audio element is ready to play the new song
+        audioPlayer.play()
+            .then(() => {
+                console.log(`Playing: ${songs[currentSongIndex]}`); // Log the current song
+            })
+            .catch(err => {
+                console.error('Error playing the next song:', err);
+            });
+        localStorage.setItem('currentSongIndex', currentSongIndex);
+        localStorage.setItem('playbackPosition', 0); // Reset playback position
+    }
+
+    // Set up persistent player state
+    function setupPersistentPlayer() {
+        const isPlaying = localStorage.getItem('isPlaying') === 'true';
+        currentSongIndex = parseInt(localStorage.getItem('currentSongIndex'), 10) || 0;
+        const playbackPosition = parseFloat(localStorage.getItem('playbackPosition')) || 0; // Get last playback position
+
+        audioPlayer.src = songs[currentSongIndex];
+        audioPlayer.currentTime = playbackPosition; // Set playback position
+
+        // Try to play the audio if it was playing previously
+        if (isPlaying) {
+            audioPlayer.play().catch(() => {
+                console.warn('Autoplay restrictions require user interaction.');
+                setTimeout(() => {
+                    audioPlayer.play().catch(() => {
+                        console.warn('Autoplay restrictions require user interaction.');
+                    });
+                }, 2000)
+            });
+        } else {
+            audioPlayer.pause();
+        }
+
+        // Update icon based on playing state
+        icon.className = isPlaying ? 'fas fa-microphone' : 'fas fa-microphone-slash';
+    }
+
+    // Handle play/pause functionality
+    toggleButton.addEventListener('click', () => {
+        if (audioPlayer.paused) {
+            audioPlayer.play().then(() => {
+                icon.className = 'fas fa-microphone';
+                localStorage.setItem('isPlaying', 'true');
+            }).catch(() => {
+                console.warn('Autoplay restrictions prevented audio playback.');
+            });
+        } else {
+            audioPlayer.pause();
+            icon.className = 'fas fa-microphone-slash';
+            localStorage.setItem('isPlaying', 'false');
+        }
+    });
+
+    // Event listener for when a song ends
+    audioPlayer.addEventListener('ended', playNextSong); // Listen for song end
+
+    // Save playback position on time update
+    audioPlayer.addEventListener('timeupdate', () => {
+        localStorage.setItem('playbackPosition', audioPlayer.currentTime);
+    });
+
+    // Start the music when the page loads
+    window.addEventListener('load', () => {
+        setupPersistentPlayer();
+    });
+</script>

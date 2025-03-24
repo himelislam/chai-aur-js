@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>File Translator</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/translation-frontend/style.css">
 </head>
 <body>
   <div class="container">
@@ -12,13 +12,21 @@
     <p>Upload a file or ZIP folder to translate its content.</p>
 
     <!-- File Upload Form -->
-    <form id="uploadForm">
+    <!-- <form id="uploadForm">
       <input type="file" id="fileInput" name="file" accept=".txt,.docx,.pdf,.zip" required>
       <select id="languageSelect" name="language" required>
         <option value="es">Spanish</option>
         <option value="fr">French</option>
         <option value="de">German</option>
         <option value="zh">Chinese</option>
+      </select>
+      <button type="submit">Upload & Translate</button>
+    </form> -->
+
+    <form id="uploadForm">
+      <input type="file" id="fileInput" name="file" accept=".txt,.docx,.pdf,.zip" required>
+      <select id="languageSelect" name="language" required>
+        <!-- Options will be populated by JavaScript -->
       </select>
       <button type="submit">Upload & Translate</button>
     </form>
@@ -32,6 +40,6 @@
     </div>
   </div>
 
-  <script src="/app.js"></script>
+  <script src="/translation-frontend/app.js"></script>
 </body>
 </html>
