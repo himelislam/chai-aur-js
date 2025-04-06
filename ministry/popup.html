@@ -1,0 +1,224 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #popup {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .popup-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .popup-subtitle {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .click-open {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="popup">
+        <span class="close-btn" onclick="closePopup()">×</span>
+        <div class="popup-content">
+            <div class="popup-title">INSPIRATIONAL</div>
+            <div class="popup-subtitle">PIANO MUSIC</div>
+            <div class="click-open">(CLICK) TO OPEN</div>
+        </div>
+    </div>
+
+    <script>
+        // Show popup on first visit
+        window.onload = function() {
+            if (!localStorage.getItem('popupShown')) {
+                document.getElementById('popup').style.display = 'block';
+                localStorage.setItem('popupShown', 'true');
+            }
+        };
+
+        // Close popup function
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Popup container */
+        #popup {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            color: white;
+            font-family: 'Helvetica Neue', sans-serif;
+            z-index: 1000;
+            transform-origin: bottom right;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        /* Arrow styling */
+        #popup::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            right: 30px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: #667eea transparent transparent transparent;
+        }
+
+        /* Close button */
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .close-btn::before {
+            content: '×';
+            color: white;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        /* Content styling */
+        .popup-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .popup-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .popup-subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .click-open {
+            background: rgba(255,255,255,0.15);
+            padding: 12px 20px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .click-open:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .click-open::after {
+            content: '→';
+            font-weight: bold;
+        }
+
+        /* Animation */
+        @keyframes slideIn {
+            from {
+                transform: translateY(100px) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="popup">
+        <div class="close-btn" onclick="closePopup()"></div>
+        <div class="popup-content">
+            <div class="popup-title">INSPIRATIONAL</div>
+            <div class="popup-subtitle">PIANO MUSIC</div>
+            <div class="click-open">(CLICK) TO OPEN</div>
+        </div>
+    </div>
+
+    <script>
+        // Show popup on first visit
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!localStorage.getItem('popupShown')) {
+                document.getElementById('popup').style.display = 'block';
+                // localStorage.setItem('popupShown', 'true');
+            }
+        });
+
+        // Close popup function
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
