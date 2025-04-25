@@ -1,0 +1,105 @@
+<script>
+
+    // for upload signup
+    (function () {
+        const origOpen = XMLHttpRequest.prototype.open;
+        const origSend = XMLHttpRequest.prototype.send;
+
+        XMLHttpRequest.prototype.open = function (method, url, ...rest) {
+            this._targetUrl = url;
+            return origOpen.call(this, method, url, ...rest);
+        };
+
+        XMLHttpRequest.prototype.send = function (body) {
+            this.addEventListener("load", function () {
+                if (
+                    this._targetUrl &&
+                    this._targetUrl.includes("https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZjMDYzMTA0MzY1MjZlNTUzZDUxM2Ei_pc") &&
+                    this.status === 200
+                ) {
+                    localStorage.setItem("uploadFormSubmitted", "true");
+                    console.log("upload form Submitted")
+                }
+            });
+            return origSend.call(this, body);
+        };
+    })();
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const anchor = document.querySelector('.dorik-button-v9aqi07z-wrapper > a');
+
+        if (anchor) {
+            const isSubmitted = localStorage.getItem("uploadFormSubmitted") === "true";
+            if (isSubmitted) {
+                anchor.setAttribute("href", "/upload"); // Change this to your desired link
+            } else {
+                anchor.setAttribute("href", "/sign-up"); // Default link if not submitted
+            }
+        }
+    });
+
+
+
+    // for download signup
+    (function () {
+        const originalFetch = window.fetch;
+
+        window.fetch = async (...args) => {
+            const response = await originalFetch(...args);
+
+            const requestUrl = args[0];
+            if (
+                typeof requestUrl === 'string' &&
+                requestUrl.includes("https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTY5MDYzNzA0MzM1MjZhNTUzNzUxMzEi_pc"
+                )
+            ) {
+                if (response.ok) {
+                    // Form submission success
+                    localStorage.setItem("downloadFormSubmitted", "true");
+                    console.log("Download Form Submitted")
+                }
+            }
+
+            return response;
+        };
+    })();
+
+    (function () {
+        const origOpen = XMLHttpRequest.prototype.open;
+        const origSend = XMLHttpRequest.prototype.send;
+
+        XMLHttpRequest.prototype.open = function (method, url, ...rest) {
+            this._targetUrl = url;
+            return origOpen.call(this, method, url, ...rest);
+        };
+
+        XMLHttpRequest.prototype.send = function (body) {
+            this.addEventListener("load", function () {
+                if (
+                    this._targetUrl &&
+                    this._targetUrl.includes("https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTY5MDYzNzA0MzM1MjZhNTUzNzUxMzEi_pc") &&
+                    this.status === 200
+                ) {
+                    localStorage.setItem("downloadFormSubmitted", "true");
+                    console.log("download form Submitted")
+                }
+            });
+            return origSend.call(this, body);
+        };
+    })();
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const anchor = document.querySelector('.dorik-button-mtvjiyw7-wrapper > a');
+
+        if (anchor) {
+            const isSubmitted = localStorage.getItem("downloadFormSubmitted") === "true";
+            if (isSubmitted) {
+                anchor.setAttribute("href", "/download"); // Change this to your desired link
+            } else {
+                anchor.setAttribute("href", "/download-sign-up"); // Default link if not submitted
+            }
+        }
+    });
+
+
+</script>

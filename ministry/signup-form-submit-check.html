@@ -1,0 +1,38 @@
+<script>
+    (function () {
+    const originalFetch = window.fetch;
+  
+    window.fetch = async (...args) => {
+      const response = await originalFetch(...args);
+  
+      const requestUrl = args[0];
+      if (
+        typeof requestUrl === 'string' &&
+        requestUrl.includes("https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZjMDYzMTA0MzY1MjZlNTUzZDUxM2Ei_pc"
+        )
+      ) {
+        if (response.ok) {
+          // Form submission success
+          localStorage.setItem("formSubmitted", "true");
+          console.log("Signup Form Submitted")
+        }
+      }
+  
+      return response;
+    };
+  })();
+
+  document.addEventListener("DOMContentLoaded", function () {
+  const anchor = document.querySelector('.dorik-button-v9aqi07z-wrapper > a');
+
+  if (anchor) {
+    const isSubmitted = localStorage.getItem("formSubmitted") === "true";
+    if (isSubmitted) {
+      anchor.setAttribute("href", "/upload-success"); // Change this to your desired link
+    } else {
+      anchor.setAttribute("href", "/sign-up"); // Default link if not submitted
+    }
+  }
+});
+  
+</script>
