@@ -1,0 +1,124 @@
+<script>
+  function getParameterByName(name) {
+    const url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    const results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+
+  function formatPhoneNumber(tel) {
+    return tel.replace(/\D/g, '');
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+      const observer = new MutationObserver(() => {
+        const titre = getParameterByName('titre');
+        const tel = getParameterByName('tel');
+
+        const titreElem = document.getElementById('custom-heading');
+        const telAnchor = document.querySelector('#custom-button')?.closest('a');
+        const telButton = document.getElementById('custom-button');
+
+        if (titre && titreElem) {
+          titreElem.textContent = titre;
+          document.title = `${titre} - Pompes Funèbres`;
+          console.log("✅ Titre mis à jour :", titre);
+        }
+
+        if (tel && telAnchor && telButton) {
+          const cleanTel = formatPhoneNumber(tel);
+          telAnchor.href = "tel:" + cleanTel;
+          telButton.innerText = tel;
+          console.log("✅ Téléphone mis à jour :", tel);
+        }
+
+        if ((titre && titreElem) || (tel && telAnchor && telButton)) {
+          observer.disconnect();
+        }
+      });
+
+      // ✅ This will now safely run after the body is ready
+      observer.observe(document.body, { childList: true, subtree: true });
+      console.log("👀 En attente des éléments avec MutationObserver...");
+    }, 3000)
+  });
+</script>
+
+
+
+
+
+// works
+
+
+
+<script>
+  function getParameterByName(name) {
+    const url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    const results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+
+  function formatPhoneNumber(tel) {
+    return tel.replace(/\D/g, '');
+  }
+
+  function updateElements() {
+    const titre = getParameterByName('titre');
+    const tel = getParameterByName('tel');
+
+    const titreElem = document.getElementById('custom-heading');
+    const telAnchor = document.querySelector('#custom-button')?.closest('a');
+    const telButton = document.getElementById('custom-button');
+
+    let updated = false;
+
+    if (titre && titreElem) {
+      titreElem.textContent = titre;
+      document.title = `${titre} - Pompes Funèbres`;
+      console.log("✅ Title updated:", titre);
+      updated = true;
+    }
+
+    if (tel && telAnchor && telButton) {
+      const cleanTel = formatPhoneNumber(tel);
+      telAnchor.href = "tel:" + cleanTel;
+    //   telButton.innerText = tel;
+      console.log("✅ Phone updated:", tel);
+      updated = true;
+    }
+
+    return updated;
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+      console.log("started");
+
+      // Try to update immediately
+      if (updateElements()) {
+        console.log("Elements updated without observer.");
+        return; // No need to observe if already updated
+      }
+
+      // If elements are not yet present, observe mutations
+      const observer = new MutationObserver(() => {
+        if (updateElements()) {
+          console.log("Elements updated via MutationObserver.");
+          observer.disconnect();
+        }
+      });
+
+      observer.observe(document.body, { childList: true, subtree: true });
+      console.log("👀 Waiting for elements with MutationObserver...");
+    }, 1000);
+  });
+</script>
