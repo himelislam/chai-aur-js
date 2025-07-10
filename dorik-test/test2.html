@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<div translate="no" lang="en">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Secret Lengua - Exercice Lecture</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <button onclick="location.reload()" class="btn-reessayer" title="Réessayer l'exercice">↻</button>
+  <style>
+    body { background-color: #FDF8FA; font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+    .main-grid {
+      display: flex; flex-wrap: wrap; gap: 20px;
+      max-width: 1200px; margin: auto; background-color: #FFFFFF;
+      padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .left-section, .right-section { flex: 1 1 300px; min-width: 300px; }
+
+    .audio-wrapper {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 20px;
+    }
+    .audio-box {
+      background-color: #E49FD2;
+      border: 1px solid #fdf6ed;
+      border-radius: 10px;
+      padding: 10px;
+      width: 280px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .audio-box img {
+      width: 45px; height: 45px;
+      border-radius: 50%;
+      border: 1px solid #E49FD2;
+      object-fit: cover;
+      margin-bottom: 6px;
+    }
+    .audio-box audio {
+      width: 100%;
+      height: 32px;
+      margin-bottom: 8px;
+    }
+    .audio-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 12px;
+    }
+    .audio-controls input[type=range] {
+      width: 60px;
+    }
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    h2 { color: #370237; font-size: 20px; text-align: center; }
+    .text-content p { font-size: 16px; line-height: 1.6; margin-bottom: 10px; }
+    .question-box {
+      background-color: #E49FD2; color: black;
+      font-weight: bold; padding: 5px;
+      border-radius: 5px; margin-bottom: 10px;
+      text-align: center; width: fit-content; color: #2A1B6A
+  
+    }
+   .options {
+  display: flex;
+  flex-wrap: wrap;       /* Permet le retour à la ligne */
+  gap: 8px;              /* Espacement entre les items */
+  margin-bottom: 20px;
+}
+
+.options label {
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: #fce4f2;
+  border-radius: 20px;
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin: 3px 0;
+  width: fit-content;          /* S'adapte au texte */
+  max-width: 100%;
+  flex: 1 1 auto;              /* Autorise la répartition flexible */
+
+}
+
+.options label:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    input[type="radio"] { margin-right: 10px; }
+    .correct .circle {
+      width: 15px; height: 15px; background-color: green;
+      border-radius: 50%; margin-left: 10px;
+      display: inline-block;
+    }
+    .incorrect {
+      color: red; font-weight: bold; text-decoration: line-through;
+    }
+    .result {
+      margin-top: 20px; padding: 10px;
+      background-color: #ffccd5; text-align: center;
+      border-radius: 5px; display: none;
+    }
+    .score-circle {
+      width: 50px; height: 50px; border-radius: 50%;
+      color: white; display: flex; justify-content: center;
+      align-items: center; margin-top: 20px;
+      font-weight: bold; font-size: 18px;
+    }
+    .low-score { background-color: red; }
+    .mid-score { background-color: pink; }
+    .high-score { background-color: green; }
+  </style>
+</head>
+<body>
+
+<div class="main-grid">
+
+  <div class="left-section">
+      <h2>Basic education: what about it? </h2>
+    <div class="audio-wrapper">
+      <div class="audio-box">
+        <img src="https://cdn.cmsfly.com/682340d18e925800120b9f82/images/Capture-qw5FS.PNG" alt="Catherine">
+        <audio id="audio1" controls>
+          <source src="https://feeds.soundcloud.com/stream/1863949218-perinemagne-lect2anglais-basic-education-what-about-it-b2" type="audio/mpeg">
+        </audio>
+        <div class="audio-controls">
+          🔉 <input type="range" min="0" max="1" step="0.01" value="1" class="volume-slider" data-audio="audio1">
+          <div class="speed-control">
+            ⏩ <button class="speed-down" data-audio="audio1">-</button>
+            <span id="speedDisplay-audio1">100%</span>
+            <button class="speed-up" data-audio="audio1">+</button>
+          </div>
+      </div>
+   
+      <div class="audio-box">
+        <img src="https://cdn.cmsfly.com/682340d18e925800120b9f82/images/Capdeu-IY4eJ.PNG" alt="Albert">
+        <audio id="audio2" controls>
+          <source src="https://feeds.soundcloud.com/stream/1863949497-perinemagne-lect2anglais-basic-education-what-about-it-b2h" type="audio/mpeg">
+        </audio>
+        <div class="audio-controls">
+          🔉 <input type="range" min="0" max="1" step="0.01" value="1" class="volume-slider" data-audio="audio2">
+          <div class="speed-control">
+            ⏩ <button class="speed-down" data-audio="audio2">-</button>
+            <span id="speedDisplay-audio2">100%</span>
+            <button class="speed-up" data-audio="audio2">+</button>
+          </div>
+        </div>
+       </div>
+        </div>
+
+
+
+<div class="right-section">
+  <div style="background-color: #E49FD2; color: #2A1B6A; text-align: center; padding: 12px 20px; border-radius: 6px; font-weight: bold; margin-bottom: 20px;">
+ Answer the following questions
+  </div>
+  <div id="quiz">
+
+<div class="question-box">Question 1</div>
+<div class="question">What is the main question addressed in the text?</div>
+<div class="options">
+  <label><input type="radio" name="q1" value="a" onclick="verifierReponse(this, 'b')"> a) The importance of higher education.</label>
+  <label><input type="radio" name="q1" value="b" onclick="verifierReponse(this, 'b')"> b) The challenges of literacy.</label>
+  <label><input type="radio" name="q1" value="c" onclick="verifierReponse(this, 'b')"> c) The advantages of digitization.</label>
+  <label><input type="radio" name="q1" value="d" onclick="verifierReponse(this, 'b')"> d) The disadvantages of urbanization.</label>
+</div>
+
+<div class="question-box">Question 2</div>
+<div class="question">What is the definition of literacy according to the text?</div>
+<div class="options">
+  <label><input type="radio" name="q2" value="a" onclick="verifierReponse(this, 'b')"> a) The ability to speak multiple languages.</label>
+  <label><input type="radio" name="q2" value="b" onclick="verifierReponse(this, 'b')"> b) The ability to read and write for daily autonomy.</label>
+  <label><input type="radio" name="q2" value="c" onclick="verifierReponse(this, 'b')"> c) The ability to use computer software.</label>
+  <label><input type="radio" name="q2" value="d" onclick="verifierReponse(this, 'b')"> d) The ability to drive a car.</label>
+</div>
+
+<div class="question-box">Question 3</div>
+<div class="question">Which countries establish more precise standards around literacy?</div>
+<div class="options">
+  <label><input type="radio" name="q3" value="a" onclick="verifierReponse(this, 'c')"> a) Only wealthy countries.</label>
+  <label><input type="radio" name="q3" value="b" onclick="verifierReponse(this, 'c')"> b) Only developing countries.</label>
+  <label><input type="radio" name="q3" value="c" onclick="verifierReponse(this, 'c')"> c) Developing countries and wealthy countries.</label>
+  <label><input type="radio" name="q3" value="d" onclick="verifierReponse(this, 'c')"> d) No countries.</label>
+</div>
+
+<div class="question-box">Question 4</div>
+<div class="question">What factors determine a country's literacy level according to the text?</div>
+<div class="options">
+  <label><input type="radio" name="q4" value="a" onclick="verifierReponse(this, 'c')"> a) Only the country's wealth.</label>
+  <label><input type="radio" name="q4" value="b" onclick="verifierReponse(this, 'c')"> b) Only the urbanization rate.</label>
+  <label><input type="radio" name="q4" value="c" onclick="verifierReponse(this, 'c')"> c) Wealth, urbanization, and other factors.</label>
+  <label><input type="radio" name="q4" value="d" onclick="verifierReponse(this, 'c')"> d) No factors.</label>
+</div>
+
+<div class="question-box">Question 5</div>
+<div class="question">In what types of countries does illiteracy persist more?</div>
+<div class="options">
+  <label><input type="radio" name="q5" value="a" onclick="verifierReponse(this, 'a')"> a) In developing countries.</label>
+  <label><input type="radio" name="q5" value="b" onclick="verifierReponse(this, 'a')"> b) In wealthy countries.</label>
+  <label><input type="radio" name="q5" value="c" onclick="verifierReponse(this, 'a')"> c) In urban countries.</label>
+  <label><input type="radio" name="q5" value="d" onclick="verifierReponse(this, 'a')"> d) In highly industrialized countries.</label>
+</div>
+</div>
+</div>
+</div>
+
+
+ <div id="result" class="result"></div>
+      <div id="scoreCircle" class="score-circle" style="display: none;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function changeSpeed(audioId, speed) {
+    const audio = document.getElementById(audioId);
+    if (audio) audio.playbackRate = speed;
+  }
+
+  let correctAnswers = 0;
+  const totalQuestions = 5;
+
+  function verifierReponse(element, bonneReponse) {
+    const parentLabel = element.parentElement;
+    if (element.value === bonneReponse) {
+      parentLabel.classList.add('correct');
+      correctAnswers++;
+      ajouterCercleVert(parentLabel);
+    } else {
+      parentLabel.classList.add('incorrect');
+      const correctOption = parentLabel.parentElement.querySelector(`input[value="${bonneReponse}"]`);
+      if (correctOption) {
+        correctOption.parentElement.classList.add('correct');
+        ajouterCercleVert(correctOption.parentElement);
+      }
+    }
+
+    const options = parentLabel.parentElement.querySelectorAll('input');
+    options.forEach(opt => opt.disabled = true);
+
+    if (document.querySelectorAll('input:checked').length === totalQuestions) {
+      afficherScore();
+    }
+  }
+
+  function ajouterCercleVert(parentLabel) {
+    const circle = document.createElement('span');
+    circle.classList.add('circle');
+    parentLabel.appendChild(circle);
+  }
+
+  function afficherScore() {
+    const score = Math.round((correctAnswers / totalQuestions) * 100);
+    const scoreCircle = document.getElementById('scoreCircle');
+    const result = document.getElementById('result');
+
+    scoreCircle.style.display = 'flex';
+    scoreCircle.textContent = score + '%';
+
+    if (score < 50) {
+      scoreCircle.classList.add('low-score');
+      result.textContent = "Low score: try again 🎉!";
+    } else if (score <= 80) {
+      scoreCircle.classList.add('mid-score');
+      result.textContent = "Average score: well done 🎉🌟🌟!";
+    } else {
+      scoreCircle.classList.add('high-score');
+      result.textContent = "Excellent score! Congratulations 🎉🌟🌟🌟🥇!";
+      showCongratulations(); // ▶ Added here the message + sound
+    } 
+    
+    const slug = "LLXBEIMHYNMBNIH";
+    localStorage.setItem("score_English-B2_" + slug, score);
+}
+// 🎉 Function to display the message and play the sound
+function showCongratulations() {
+    document.getElementById("congrats-message").style.display = "block";
+    document.getElementById("congrats-sound").play();
+}
+</script>
+
+<!-- 🎉 Congratulations block (displayed if score > 80%) -->
+<div id="congrats-message" style="text-align:center; display:none; font-family: Arial; margin-top: 20px;">
+  <img src="https://cdn-icons-png.flaticon.com/512/3159/3159066.png" width="50">
+  <h3 style="color:#2A1B6A;">Congratulations!</h3>
+  <p>You successfully completed the exercise!</p>
+</div>
+
+<!-- 🔊 Congratulations sound -->
+<audio id="congrats-sound" preload="auto">
+  <source src="https://feeds.soundcloud.com/stream/2118641388-perinemagne-mixkit-retro-game-notification?" type="audio/mpeg">
+</audio>
+
+<!-- 🔁 Button to retry -->
+<button onclick="location.reload()" class="btn-reessayer" title="Retry the exercise">↻</button> 
+
+<!-- 🔙 Button to go back to the previous page -->
+<button onclick="history.back()">⬅ Back</button>
+</body>
+</html>
